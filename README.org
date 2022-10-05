@@ -1,0 +1,12 @@
+#+TITLE: Go Playground
+
+This repo is just my playground to learn and try to take notes on things I learn
+in Golang. So far I have been following this guide:
+https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
+
+So far I have gone through the following chapters:
+- 1. :: [[./helloWorld/README.org][Hello World]]
+- 2. :: [[./integers/README.org][Integers]]
+- 3. :: [[./iteration/README.org][Iteration]]
+- 4. :: [[./arraysSlices/README.org][Arrays and Slices]]
+- 5. :: [[./structsMethodsInterfaces/README.org][Struct, Methods, and Interfaces]]
