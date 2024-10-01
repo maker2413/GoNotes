@@ -33,9 +33,10 @@ func TestHello(t *testing.T) {
 
 // testing.TB is an interface that accepts tests and benchmarks
 func assertCorrectMessage(t testing.TB, got, want string) {
-	//t.Helper will make the failure message show the line number test that called this function
+	// t.Helper will make the failure message show the line number test that called this function
 	t.Helper()
 	if got != want {
+		// %q is used to format strings
 		t.Errorf("got: %q, want: %q", got, want)
 	}
 }

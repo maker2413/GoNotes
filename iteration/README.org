@@ -1,0 +1,50 @@
+#+TITLE: Iteration
+
+This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/iteration][Learn Go with Tests]].
+
+#+BEGIN_QUOTE
+To do stuff repeatedly in Go, you'll need =for=. In Go there are no =while=, =do=,
+=until= keywords, you can only use =for=. Which is a good thing!
+#+END_QUOTE
+
+Additional documentation on for loops in golang can be found [[https://gobyexample.com/for][here]].
+
+* Benchmarking
+  Writing benchmarks in Go is another first-class feature of the language and it
+  is very similar to writing tests.
+
+  #+begin_src go
+    func BenchmarkRepeat(b *testing.B) {
+            for i := 0; i < b.N; i++ {
+                    Repeat("a")
+            }
+    }
+  #+end_src
+
+  You'll see the code is very similar to a test.
+
+  The testing.B gives you access to the cryptically named b.N.
+
+  When the benchmark code is executed, it runs b.N times and measures how long it takes.
+
+  The amount of times the code is run shouldn't matter to you, the framework
+  will determine what is a "good" value for that to let you have some decent
+  results.
+
+  To run the benchmarks do go test -bench=. (or if you're in Windows Powershell
+  go test -bench=".")
+
+  #+begin_example
+    goos: linux
+    goarch: amd64
+    pkg: iteration
+    cpu: AMD Ryzen 7 7700X 8-Core Processor             
+    BenchmarkRepeat-16      18390067                63.63 ns/op
+    PASS
+    ok      iteration       1.239s
+  #+end_example
+
+  What 63.63 ns/op means is our function takes on average 64 nanoseconds to run
+  (on my computer). Which is pretty ok! To test this it ran it 10000000 times.
+
+  *NOTE* by default Benchmarks are run sequentially.
