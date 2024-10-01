@@ -1,34 +1,21 @@
 package main
 
-func Sum(x []int) int {
-	sum := 0
-	for _, i := range x {
-		sum += i
+import "fmt"
+
+func Sum(numbers [5]int) int {
+	var sum int
+	// range lets you iterate over an array. On each iteration,
+	// range returns two values - the index and the value.
+	// We are choosing to ignore the index value by using _ blank identifier.
+	for _, number := range numbers {
+		sum += number
 	}
 
 	return sum
 }
 
-func SumAll(x ...[]int) []int {
-	var sums []int
+func main() {
+	numbers := [5]int{1, 2, 3, 4, 5}
 
-	for _, y := range x {
-		sums = append(sums, Sum(y))
-	}
-	
-	return sums
-}
-
-func SumAllTails(x ...[]int) []int {
-	var sums []int
-
-	for _, y := range x {
-		if len(y) == 0 {
-			sums = append(sums, 0)
-		} else {
-			sums = append(sums, Sum(y[1:]))
-		}
-	}
-	
-	return sums
+	fmt.Println(Sum(numbers))
 }

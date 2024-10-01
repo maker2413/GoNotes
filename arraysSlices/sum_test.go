@@ -1,48 +1,19 @@
 package main
 
-import (
-	"testing"
-	"reflect"
-)
+import "testing"
 
 func TestSum(t *testing.T) {
-	numbers := []int{1, 2, 3}
+	numbers := [5]int{1, 2, 3, 4, 5}
 
 	got := Sum(numbers)
-	want := 6
+	want := 15
+	assertCorrectAnswer(t, got, want, numbers)
+}
 
+func assertCorrectAnswer(t testing.TB, got, want int, numbers [5]int) {
+	t.Helper()
 	if got != want {
-		t.Errorf("got %d, but wanted %d, given %v", got, want, numbers)
+		// %v is used to print the "default" format, which works well for arrays
+		t.Errorf("expected: '%d', but got: '%d', input: %v", want, got, numbers)
 	}
-}
-
-func TestSumAll(t *testing.T) {
-	got := SumAll([]int{1, 2}, []int{0, 9})
-	want := []int{3, 9}
-
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %d, but wanted %v", got, want)
-	}
-}
-
-func TestSumAllTails(t *testing.T) {
-	checkSums := func(t testing.TB, got, want []int) {
-		t.Helper()
-		
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("got %v, but wanted %v", got, want)
-		}
-	}
-	t.Run("sums of some slices", func(t *testing.T) {
-		got := SumAllTails([]int{1, 2}, []int{0, 9})
-		want := []int{2, 9}
-
-		checkSums(t, got, want)
-	})
-	t.Run("sum empty slices", func(t *testing.T) {
-		got := SumAllTails([]int{}, []int{3, 4, 5})
-		want := []int{0, 9}
-
-		checkSums(t, got, want)
-	})
 }

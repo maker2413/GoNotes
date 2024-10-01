@@ -1,0 +1,22 @@
+#+TITLE: Arrays and Slices
+
+This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/arrays-and-slices][Learn Go with Tests]].
+
+For this program we are going to call our package main. According to common
+practice, package main will only contain integration of other packages and not
+unit-testable code and hence Go will not allow you to import a package with name
+=main=.
+
+To fix this, you will have to rename the main module in =go.mod= to any other name.
+
+Arrays have a /fixed/ capacity which you define when you declare the variable. We
+can initialize an array in two ways:
+- [N]type{value1, value2, ..., valueN}:
+  ~numbers := [5]int{1, 2, 3, 4, 5}~
+- [...]type{value1, value2, ..., valueN}:
+  ~numbers := [...]int{1, 2, 3, 4, 5}~
+
+In this program we also use =range= to in our =for= loop logic. =range= lets you
+iterate over an array. On each iteration, =range= returns two values - the index
+and the value. We are choosing to ignore the index value by using =_=
+[[https://go.dev/doc/effective_go#blank][blank identifier]].
