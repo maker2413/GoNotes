@@ -8,9 +8,14 @@ import (
 func TestAdder(t *testing.T) {
 	sum := Add(2, 2)
 	expected := 4
+	assertCorrectAnswer(t, sum, expected)
+}
 
-	if sum !=expected {
-		t.Errorf("expected '%d' but got '%d'", expected, sum)
+func assertCorrectAnswer(t testing.TB, sum, expected int) {
+	t.Helper()
+	if sum != expected {
+		// %d is used to format integers
+		t.Errorf("expected: '%d', but got: '%d'", expected, sum)
 	}
 }
 

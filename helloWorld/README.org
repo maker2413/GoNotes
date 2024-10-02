@@ -1,0 +1,39 @@
+#+TITLE: Hello World
+
+This directory just goes over the basics of Golang and how to start a project.
+
+This snippet from the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/install-go#go-modules][learning go with tests]] guide is quite important and I'm
+including here for future reference:
+
+#+BEGIN_QUOTE
+Go 1.11 introduced Modules. This approach is the default build mode since Go
+1.16, therefore the use of =GOPATH= is not recommended.
+
+Modules aim to solve problems related to dependency management, version
+selection and reproducible builds; they also enable users to run Go code outside
+of =GOPATH=.
+
+Using Modules is pretty straightforward. Select any directory outside =GOPATH=
+as the root of your project, and create a new module with the ~go mod init~
+command.
+
+A =go.mod= file will be generated, containing the module path, a Go version, and
+its dependency requirements, which are the other modules needed for a successful
+build.
+
+If no ~<modulepath>~ is specified, ~go mod init~ will try to guess the module
+path from the directory structure. It can also be overridden by supplying an
+argument.
+#+END_QUOTE
+
+The =go= cli also has built-in documentation for all of its available commands:
+#+begin_src bash
+  go help mod
+  go help mod init
+#+end_src
+
+Golang also has a built-in linter, but it can be helpful to install
+[[https://golangci-lint.run/]] as an improved linter.
+
+With that out of the way you can following along with this section here:
+https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/hello-world.

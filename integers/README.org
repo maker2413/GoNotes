@@ -1,0 +1,9 @@
+#+TITLE: Integers
+
+This section follows Integers chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/integers][Learn Go with Tests]].
+
+#+BEGIN_QUOTE
+*Note:* Go source files can only have one package per directory. Make sure that
+your files are organised into their own packages. [[https://dave.cheney.net/2014/12/01/five-suggestions-for-setting-up-a-go-project][Here is a good explaination on
+this]].
+#+END_QUOTE
