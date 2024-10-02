@@ -1,0 +1,24 @@
+#+TITLE: Structs, methods & interfaces
+
+This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/structs-methods-and-interfaces][Learn Go with Tests]].
+
+This section will cover [[https://go.dev/ref/spec#Struct_types][structs]], [[https://go.dev/ref/spec#Method_declarations][methods]], and [[https://go.dev/ref/spec#Interface_types][interfaces]].
+
+- *structs*: A struct is just a named collection of fields where you can store
+  data.
+- *methods*: The syntax for declaring methods is almost the same as functions
+  and that's because they're so similar. The only difference is the syntax of
+  the method receiver ~func (receiverName ReceiverType) MethodName(args)~.
+
+  When your method is called on a variable of that type, you get your reference
+  to its data via the =receiverName= variable. In many other programming
+  languages this is done implicitly and you access the receiver via =this=. 
+- *interfaces*: Interfaces are a very powerful concept in statically typed
+  languages like Go because they allow you to make functions that can be used
+  with different types and create highly-decoupled code whilst still maintaining
+  type-safety.
+
+Now that we have an understanding of structs we can also cover [[https://go.dev/wiki/TableDrivenTests][table driven tests]].
+
+Table driven tests are useful when you want to build a list of test cases that
+can be tested in the same manner. 
