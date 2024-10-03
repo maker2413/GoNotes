@@ -10,3 +10,4 @@ So far I have gone through the following chapters:
 - 3. :: [[./iteration/README.org][Iteration]]
 - 4. :: [[./arraysSlices/README.org][Arrays and Slices]]
 - 5. :: [[./structsMethodsInterfaces/README.org][Struct, Methods, and Interfaces]]
+- 6. :: [[./pointers/README.org][Pointers & errors]]

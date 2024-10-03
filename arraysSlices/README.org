@@ -1,6 +1,6 @@
 #+TITLE: Arrays and Slices
 
-This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/arrays-and-slices][Learn Go with Tests]].
+This section follows Arrays and Slices chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/arrays-and-slices][Learn Go with Tests]].
 
 For this program we are going to call our package main. According to common
 practice, package main will only contain integration of other packages and not

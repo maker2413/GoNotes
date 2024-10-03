@@ -1,6 +1,6 @@
-#+TITLE: Structs, methods & interfaces
+#+TITLE: Structs, methods, & interfaces
 
-This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/structs-methods-and-interfaces][Learn Go with Tests]].
+This section follows Structs, methods, & interfaces chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/structs-methods-and-interfaces][Learn Go with Tests]].
 
 This section will cover [[https://go.dev/ref/spec#Struct_types][structs]], [[https://go.dev/ref/spec#Method_declarations][methods]], and [[https://go.dev/ref/spec#Interface_types][interfaces]].
 
