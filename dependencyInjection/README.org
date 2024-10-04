@@ -1,0 +1,3 @@
+#+TITLE: Dependency Injection
+
+This section follows Dependency Injection chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/dependency-injection][Learn Go with Tests]].
