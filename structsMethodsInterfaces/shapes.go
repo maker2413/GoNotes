@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "math"
 
 type Rectangle struct {
 	Width  float64
@@ -34,9 +31,4 @@ func (c Circle) Area() float64 {
 
 func (t Triangle) Area() float64 {
 	return .5 * (t.Width * t.Height)
-}
-
-func main() {
-	shape := Rectangle{10.0, 10.0}
-	fmt.Println(Perimeter(shape))
 }

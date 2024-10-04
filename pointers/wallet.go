@@ -44,11 +44,3 @@ func (w *Wallet) Withdraw(amount Bitcoin) error {
 func (w Wallet) Balance() Bitcoin {
 	return w.balance
 }
-
-func main() {
-	wallet := Wallet{}
-
-	wallet.Deposit(Bitcoin(10))
-
-	fmt.Printf("Balance: %s", wallet.Balance())
-}

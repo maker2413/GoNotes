@@ -1,7 +1,5 @@
 package iteration
 
-import "fmt"
-
 func Repeat(character string, count int) string {
 	// var is used to declare a variable that can later be set := is just short
 	// hand to declare and set a variable in one line.
@@ -16,8 +14,4 @@ func Repeat(character string, count int) string {
 	}
 
 	return repeated
-}
-
-func main() {
-	fmt.Println(Repeat("a", 5))
 }
