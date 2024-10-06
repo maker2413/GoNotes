@@ -1,0 +1,13 @@
+#+TITLE: Mocking
+
+This section follows Mocking chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/mocking][Learn Go with Tests]].
+
+You have been asked to write a program which counts down from 3, printing each
+number on a new line (with a 1-second pause) and when it reaches zero it will
+print "Go!" and exit:
+#+BEGIN_EXAMPLE
+  3
+  2
+  1
+  Go!
+#+END_EXAMPLE
