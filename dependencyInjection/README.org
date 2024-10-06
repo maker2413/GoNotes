@@ -1,6 +1,6 @@
 #+TITLE: Dependency Injection
 
-This section follows Dependency Injection chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/dependency-injection][Learn Go with Tests]].
+This section follows the Dependency Injection chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/dependency-injection][Learn Go with Tests]].
 
 It is assumed that you have read the [[../structsMethodsInterfaces/README.org][structs]] section before as some
 understanding of interfaces will be needed for this.

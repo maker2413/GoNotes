@@ -1,6 +1,6 @@
 #+TITLE: Iteration
 
-This section follows Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/iteration][Learn Go with Tests]].
+This section follows the Iteration chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/iteration][Learn Go with Tests]].
 
 #+BEGIN_QUOTE
 To do stuff repeatedly in Go, you'll need =for=. In Go there are no =while=, =do=,

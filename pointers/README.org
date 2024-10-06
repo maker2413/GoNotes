@@ -1,6 +1,6 @@
 #+TITLE: Pointers & Errors
 
-This section follows Pointers & Errors chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/pointers-and-errors][Learn Go with Tests]].
+This section follows the Pointers & Errors chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/pointers-and-errors][Learn Go with Tests]].
 
 Towards the end of this chapter we go over the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/pointers-and-errors#unchecked-errors][errcheck]] package to scan our
 code and find scenarios we aren't testing for.

@@ -1,0 +1,3 @@
+#+TITLE: Concurrency
+
+This section follows the Concurrency chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/concurrency][Learn Go with Tests]].
