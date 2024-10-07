@@ -16,6 +16,7 @@ func BenchmarkCheckWebsites(b *testing.B) {
 		urls[i] = "a url"
 	}
 
+	// ResetTimer() is used to reset the time of our test before it actually runs
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		CheckWebsites(slowStubWebsiteChecker, urls)
