@@ -1,3 +1,14 @@
 #+TITLE: Select
 
 This section follows the Concurrency chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/select][Learn Go with Tests]].
+
+=select=
+- Helps you wait on multiple channels.
+- Sometimes you'll want to include ~time.After~ in one of your cases to prevent
+  your system blocking forever.
+
+=httptest=
+- A convenient way of creating test servers so you can have reliable and
+  controllable tests.
+- Uses the same interfaces as the "real" ~net/http~ servers which is consistent
+  and less for you to learn.
