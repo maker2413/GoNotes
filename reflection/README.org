@@ -1,0 +1,58 @@
+#+TITLE: Reflection
+
+This section follows the Reflection chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/reflection][Learn Go with Tests]].
+
+#+BEGIN_QUOTE
+golang challenge: write a function ~walk(x interface{}, fn func(string))~ which
+takes a struct ~x~ and calls ~fn~ for all strings fields found
+inside. difficulty level: recursively.
+#+END_QUOTE
+
+To do this we will need to use /reflection/.
+#+BEGIN_QUOTE
+Reflection in computing is the ability of a program to examine its own
+structure, particularly through types; it's a form of metaprogramming. It's also
+a great source of confusion.
+#+END_QUOTE
+
+From [[https://go.dev/blog/laws-of-reflection][The Go Blog: Reflection]].
+
+* What is ~interface{}~?
+  We have enjoyed the type-safety that Go has offered us in terms of functions
+  that work with known types, such as ~string~, ~int~ and our own types like
+  ~BankAccount~.
+
+  This means that we get some documentation for free and the compiler will
+  complain if you try and pass the wrong type to a function.
+
+  You may come across scenarios though where you want to write a function where
+  you don't know the type at compile time.
+
+  Go lets us get around this with the type ~interface{}~ which you can think of as
+  just any type (in fact, in Go ~any~ is an [[https://cs.opensource.google/go/go/+/master:src/builtin/builtin.go;l=97;drc=master][alias]] for ~interface{}~).
+
+  So ~walk(x interface{}, fn func(string))~ will accept any value for ~x~.
+  
+** So why not use interface{} for everything and have really flexible functions?
+   - As a user of a function that takes ~interface{}~ you lose type safety. What
+     if you meant to pass ~Herd.species~ of type ~string~ into a function but
+     instead did ~Herd.count~ which is an ~int~? The compiler won't be able to
+     inform you of your mistake. You also have no idea what you're allowed to
+     pass to a function. Knowing that a function takes a ~UserService~ for
+     instance is very useful.
+   - As a writer of such a function, you have to be able to inspect anything
+     that has been passed to you and try and figure out what the type is and
+     what you can do with it. This is done using reflection. This can be quite
+     clumsy and difficult to read and is generally less performant (as you have
+     to do checks at runtime).
+
+   In short only use reflection if you really need to.
+
+   If you want polymorphic functions, consider if you could design it around an
+   interface (not ~interface{}~, confusingly) so that users can use your
+   function with multiple types if they implement whatever methods you need for
+   your function to work.
+
+   Our function will need to be able to work with lots of different things. As
+   always we'll take an iterative approach, writing tests for each new thing we
+   want to support and refactoring along the way until we're done.

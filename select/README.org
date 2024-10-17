@@ -1,6 +1,6 @@
 #+TITLE: Select
 
-This section follows the Concurrency chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/select][Learn Go with Tests]].
+This section follows the Select chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/select][Learn Go with Tests]].
 
 =select=
 - Helps you wait on multiple channels.
