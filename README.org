@@ -20,3 +20,4 @@ So far I have gone through the following chapters:
 - 13. :: [[./sync/README.org][Sync]]
 - 14. :: [[./context/README.org][Context]]
 - 15. :: [[./propertyTests/README.org][Intro to property based tests]]
+- 16. :: [[./maths/README.org][Maths]]
