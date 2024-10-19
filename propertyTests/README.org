@@ -1,0 +1,4 @@
+#+TITLE: Intro to property based tests
+
+This section follows the Intro to property based tests chapter of the
+[[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/roman-numerals][Learn Go with Tests]].
