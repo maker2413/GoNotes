@@ -17,3 +17,4 @@ So far I have gone through the following chapters:
 - 10. :: [[./concurrency/README.org][Concurrency]]
 - 11. :: [[./select/README.org][Select]]
 - 12. :: [[./reflection/README.org][Reflection]]
+- 13. :: [[./sync/README.org][Sync]]
