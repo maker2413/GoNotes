@@ -1,3 +1,3 @@
-module sync
+module counter
 
 go 1.23.2
