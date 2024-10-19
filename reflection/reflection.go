@@ -5,8 +5,9 @@ import "reflect"
 func walk(x interface{}, fn func(input string)) {
 	val := getValue(x)
 
-	numberOfValues := 0
-	var getField func(int) reflect.Value
+	walkValue := func(value reflect.Value) {
+		walk(value.Interface(), fn)
+	}
 
 	switch val.Kind() {
 	case reflect.String:
@@ -15,15 +16,37 @@ func walk(x interface{}, fn func(input string)) {
 	case reflect.Struct:
 		// val has a method NumField which returns the number of fields in the value.
 		// This lets us iterate over the fields and call fn which passes our test.
-		numberOfValues = val.NumField()
-		getField = val.Field
-	case reflect.Slice:
-		numberOfValues = val.Len()
-		getField = val.Index
-	}
-
-	for i := 0; i < numberOfValues; i++ {
-		walk(getField(i).Interface(), fn)
+		for i := 0; i < val.NumField(); i++ {
+			walkValue(val.Field(i))
+		}
+	// A case can have multiple triggers
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < val.Len(); i++ {
+			walkValue(val.Index(i))
+		}
+	case reflect.Map:
+		for _, key := range val.MapKeys() {
+			walk(val.MapIndex(key).Interface(), fn)
+		}
+	case reflect.Chan:
+		for {
+			// Recv receives and returns a value from the channel v. It panics if v's Kind
+			// is not Chan. The receive blocks until a value is ready. The boolean value ok
+			// is true if the value x corresponds to a send on the channel, false if it is a
+			// zero value received because the channel is closed.
+			if v, ok := val.Recv(); ok {
+				walkValue(v)
+			} else {
+				break
+			}
+		}
+	case reflect.Func:
+		// Call calls the function v with the input arguments in.
+		// func (v Value) Call(in []Value) []Value
+		valFnResult := val.Call(nil)
+		for _, res := range valFnResult {
+			walkValue(res)
+		}
 	}
 }
 
