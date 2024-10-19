@@ -2,3 +2,26 @@
 
 This section follows the Intro to property based tests chapter of the
 [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/roman-numerals][Learn Go with Tests]].
+
+Some companies will ask you to do the [[https://codingdojo.org/kata/RomanNumerals/][Roman Numeral Kata]] as part of the
+interview process. This chapter will show how you can tackle it with TDD.
+
+We are going to write a function which converts an [[https://en.wikipedia.org/wiki/Arabic_numerals][Arabic number]] (numbers 0
+to 9) to a Roman Numeral.
+
+If you haven't heard of [[https://en.wikipedia.org/wiki/Roman_numerals][Roman Numerals]] they are how the Romans wrote down
+numbers.
+
+You build them by sticking symbols together and those symbols represent numbers.
+
+So =I= is "one". =III= is three.
+
+Seems easy but there's a few interesting rules. =V= means five, but =IV= is 4
+(not =IIII=).
+
+=MCMLXXXIV= is 1984. That looks complicated and it's hard to imagine how we can
+write code to figure this out right from the start.
+
+As this book stresses, a key skill for software developers is to try and
+identify "thin vertical slices" of useful functionality and then
+*iterating*. The TDD workflow helps facilitate iterative development.
