@@ -1,0 +1,3 @@
+#+TITLE: Reading files
+
+This section follows the Reading files chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/reading-files][Learn Go with Tests]].
