@@ -1,3 +1,204 @@
 #+TITLE: Maths
 
 This section follows the Maths chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/math][Learn Go with Tests]].
+
+* An Acceptance Test
+  Before we get too stuck in, lets think about an acceptance test.
+
+  Wait, you don't know what an acceptance test is yet. Look, let me try to
+  explain.
+
+  Let me ask you: what does winning look like? How do we know we've finished
+  work? TDD provides a good way of knowing when you've finished: when the test
+  passes. Sometimes it's nice - actually, almost all of the time it's nice - to
+  write a test that tells you when you've finished writing the whole usable
+  feature. Not just a test that tells you that a particular function is working
+  in the way you expect, but a test that tells you that the whole thing you're
+  trying to achieve - the 'feature' - is complete.
+
+  These tests are sometimes called 'acceptance tests', sometimes called 'feature
+  tests'. The idea is that you write a really high level test to describe what
+  you're trying to achieve - a user clicks a button on a website, and they see a
+  complete list of the Pokémon they've caught, for instance. When we've written
+  that test, we can then write more tests - unit tests - that build towards a
+  working system that will pass the acceptance test. So for our example these
+  tests might be about rendering a webpage with a button, testing route handlers
+  on a web server, performing database look ups, etc. All of these things will
+  be TDD'd, and all of them will go towards making the original acceptance test
+  pass.
+
+  [[file:images/example.jpeg]]
+
+  Anyway, let's try and write that acceptance test - the one that will let us
+  know when we're done.
+
+  We've got an example clock, so let's think about what the important parameters
+  are going to be.
+  #+begin_src xml
+    <line x1="150" y1="150" x2="114.150000" y2="132.260000"
+            style="fill:none;stroke:#000;stroke-width:7px;"/>
+  #+end_src
+
+  The centre of the clock (the attributes ~x1~ and ~y1~ for this line) is the
+  same for each hand of the clock. The numbers that need to change for each hand
+  of the clock - the parameters to whatever builds the SVG - are the ~x2~ and
+  ~y2~ attributes. We'll need an X and a Y for each of the hands of the clock.
+
+  I /could/ think about more parameters - the radius of the clockface circle,
+  the size of the SVG, the colours of the hands, their shape, etc... but it's
+  better to start off by solving a simple, concrete problem with a simple,
+  concrete solution, and then to start adding parameters to make it generalised.
+
+  So we'll say that:
+  - every clock has a centre of (150, 150)
+  - the hour hand is 50 long
+  - the minute hand is 80 long
+  - the second hand is 90 long.
+
+  A thing to note about SVGs: the origin - point (0,0) - is at the top left hand
+  corner, not the /bottom left/ as we might expect. It'll be important to
+  remember this when we're working out where what numbers to plug in to our
+  lines.
+
+  Finally, I'm not deciding /how/ to construct the SVG - we could use a template
+  from the ~text/template~ package, or we could just send bytes into a
+  ~bytes.Buffer~ or a writer. But we know we'll need those numbers, so let's
+  focus on testing something that creates them.
+
+* Math
+  The math around find coordinators for our clock hands can be read [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/math#math][here]].
+
+* Floats are horrible
+  Floating point arithmetic is [[https://0.30000000000000004.com/][notoriously inaccurate]]. Computers can only really
+  handle integers, and rational numbers to some extent. Decimal numbers start to
+  become inaccurate, especially when we factor them up and down as we are in the
+  ~secondsInRadians~ function. By dividing ~math.Pi~ by 30 and then by
+  multiplying it by 30 we've ended up with
+  /a number that's no longer the same as/ ~math.Pi~.
+
+  There are two ways around this:
+  1. Live with it.
+  2. Refactor our function by refactoring our equation.
+
+  Now (1) may not seem all that appealing, but it's often the only way to make
+  floating point equality work. Being inaccurate by some infinitesimal fraction
+  is frankly not going to matter for the purposes of drawing a clockface, so we
+  could write a function that defines a 'close enough' equality for our
+  angles. But there's a simple way we can get the accuracy back: we rearrange
+  the equation so that we're no longer dividing down and then multiplying up. We
+  can do it all by just dividing.
+
+  So instead of:
+  #+BEGIN_EXAMPLE
+  numberOfSeconds * π / 30
+  #+END_EXAMPLE
+
+  We can write:
+  #+BEGIN_EXAMPLE
+  π / (30 / numberOfSeconds)
+  #+END_EXAMPLE
+
+  which is equivalent.
+
+  In Go:
+  #+begin_src go
+    func secondsInRadians(t time.Time) float64 {
+            return (math.Pi / (30 / (float64(t.Second()))))
+    }
+  #+end_src
+
+  And we get a pass.
+  #+BEGIN_EXAMPLE
+  PASS
+  ok      clockface     0.005s
+  #+END_EXAMPLE
+
+  It should all look [[https://github.com/quii/learn-go-with-tests/tree/main/math/v3/clockface][something like this]].
+
+* Parsing XML
+  ~encoding/xml~ is the Go package that can handle all things to do with simple
+  XML parsing.
+
+  The function ~xml.Unmarshal~ takes a ~[]byte~ of XML data, and a pointer to a
+  struct for it to get unmarshalled in to.
+
+  So we'll need a struct to unmarshall our XML into. We could spend some time
+  working out what the correct names for all of the nodes and attributes, and
+  how to write the correct structure but, happily, someone has written ~zek~ a
+  program that will automate all of that hard work for us. Even better, there's
+  an online version at https://xml-to-go.github.io/.
+
+* Wrapping up
+  Do we need to do anything else?
+
+  First, let's pat ourselves on the back - we've written a program that makes an
+  SVG clockface. It works and it's great. It will only ever make one sort of
+  clockface - but that's fine! Maybe you only /want/ one sort of
+  clockface. There's nothing wrong with a program that solves a specific problem
+  and nothing else.
+
+** A Program... and a Library
+   But the code we've written /does/ solve a more general set of problems to do
+   with drawing a clockface. Because we used tests to think about each small
+   part of the problem in isolation, and because we codified that isolation with
+   functions, we've built a very reasonable little API for clockface
+   calculations.
+
+   We can work on this project and turn it into something more general - a
+   library for calculating clockface angles and/or vectors.
+
+   In fact, providing the library along with the program is a /really good/
+   idea. It costs us nothing, while increasing the utility of our program and
+   helping to document how it works.
+
+   #+BEGIN_QUOTE
+   APIs should come with programs, and vice versa. An API that you must write C
+   code to use, which cannot be invoked easily from the command line, is harder
+   to learn and use. And contrariwise, it's a royal pain to have interfaces
+   whose only open, documented form is a program, so you cannot invoke them
+   easily from a C program. -- Henry Spencer, in /The Art of Unix Programming/
+   #+END_QUOTE
+
+   In [[https://github.com/quii/learn-go-with-tests/tree/main/math/vFinal/clockface][the final take on this program]], I've made the unexported functions within
+   ~clockface~ into a public API for the library, with functions to calculate
+   the angle and unit vector for each of the clock hands. I've also split the
+   SVG generation part into its own package, ~svg~, which is then used by the
+   ~clockface~ program directly. Naturally I've documented each of the functions
+   and packages.
+
+   Talking about SVGs...
+
+** The Most Valuable Test
+   I'm sure you've noticed that the most sophisticated piece of code for
+   handling SVGs isn't in our application code at all; it's in the test
+   code. Should this make us feel uncomfortable? Shouldn't we do something like:
+   - use a template from ~text/template~?
+   - use an XML library (much as we're doing in our test)?
+   - use an SVG library?
+
+   We could refactor our code to do any of these things, and we can do so
+   because it doesn't matter /how/ we produce our SVG, what is important is
+   /what/ we produce - an /SVG/. As such, the part of our system that needs to
+   know the most about SVGs - that needs to be the strictest about what
+   constitutes an SVG - is the test for the SVG output: it needs to have enough
+   context and knowledge about what an SVG is for us to be confident that we're
+   outputting an SVG. The /what/ of an SVG lives in our tests; the /how/ in the
+   code.
+
+   We may have felt odd that we were pouring a lot of time and effort into those
+   SVG tests - importing an XML library, parsing XML, refactoring the structs -
+   but that test code is a valuable part of our codebase - possibly more
+   valuable than the current production code. It will help guarantee that the
+   output is always a valid SVG, no matter what we choose to use to produce it.
+
+   Tests are not second class citizens - they are not 'throwaway' code. Good
+   tests will last a lot longer than the version of the code they are
+   testing. You should never feel like you're spending 'too much time' writing
+   your tests. It is an investment.
+   1. In short it makes it easier to do calculus with circles as π just keeps
+      coming up as an angle if you use normal degrees, so if you count your
+      angles in πs it makes all the equations simpler.
+
+# Local Variables:
+# org-image-actual-width: (1024)
+# End:
