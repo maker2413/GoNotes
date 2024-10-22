@@ -22,3 +22,4 @@ So far I have gone through the following chapters:
 - 15. :: [[./propertyTests/README.org][Intro to property based tests]]
 - 16. :: [[./maths/README.org][Maths]]
 - 17. :: [[./readingFiles/README.org][Reading files]]
+- 18. :: [[./templating/README.org][Templating]]

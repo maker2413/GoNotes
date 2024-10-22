@@ -1,0 +1,3 @@
+#+TITLE: Templating
+
+This section follows the Reading files chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/html-templates][Learn Go with Tests]].

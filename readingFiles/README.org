@@ -1,3 +1,89 @@
 #+TITLE: Reading files
 
 This section follows the Reading files chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/reading-files][Learn Go with Tests]].
+
+* Iterative, test-driven development
+  We'll take an iterative approach where we're always taking simple, safe steps
+  toward our goal.
+
+  This requires us to break up our work, but we should be careful not to fall
+  into the trap of taking a [[https://en.wikipedia.org/wiki/Bottom%E2%80%93up_and_top%E2%80%93down_design]["bottom up"]] approach.
+
+  We should not trust our over-active imaginations when we start work. We could
+  be tempted into making some kind of abstraction that is only validated once we
+  stick everything together, such as some kind of ~BlogPostFileParser~.
+
+  This is /not/ iterative and is missing out on the tight feedback loops that
+  TDD is supposed to bring us.
+
+  Kent Beck says:
+  #+BEGIN_QUOTE
+  Optimism is an occupational hazard of programming. Feedback is the treatment.
+  #+END_QUOTE
+
+  Instead, our approach should strive to be as close to delivering /real/
+  consumer value as quickly as possible (often called a "happy path"). Once we
+  have delivered a small amount of consumer value end-to-end, further iteration
+  of the rest of the requirements is usually straightforward.
+
+* Thinking about the kind of test we want to see
+  Let's remind ourselves of our mindset and goals when starting:
+  - *Write the test we want to see*. Think about how we'd like to use the code
+    we're going to write from a consumer's point of view.
+  - Focus on /what/ and /why/, but don't get distracted by /how/.
+
+  Our package needs to offer a function that can be pointed at a folder, and
+  return us some posts.
+
+  #+begin_src go
+    var posts []blogposts.Post
+    posts = blogposts.NewPostsFromFS("some-folder")
+  #+end_src
+
+  To write a test around this, we'd need some kind of test folder with some
+  example posts in it. /There's nothing terribly wrong with this/, but you are
+  making some trade-offs:
+  - for each test you may need to create new files to test a particular
+    behaviour.
+  - some behaviour will be challenging to test, such as failing to load files.
+  - the tests will run a little slower because they will need to access the file
+    system.
+
+  We're also unnecessarily coupling ourselves to a specific implementation of
+  the file system.
+
+* File system abstractions introduced in Go 1.16
+  Go 1.16 introduced an abstraction for file systems; the [[https://pkg.go.dev/io/fs][io/fs]] package.
+  #+BEGIN_QUOTE
+  Package fs defines basic interfaces to a file system. A file system can be
+  provided by the host operating system but also by other packages.
+  #+END_QUOTE
+
+  This lets us loosen our coupling to a specific file system, which will then
+  let us inject different implementations according to our needs.
+  #+BEGIN_QUOTE
+  [[https://go.dev/doc/go1.16#fs][On the producer side of the interface, the new embed.FS type implements fs.FS,
+  as does zip.Reader. The new os.DirFS function provides an implementation of
+  fs.FS backed by a tree of operating system files.]]
+  #+END_QUOTE
+
+  If we use this interface, users of our package have a number of options
+  baked-in to the standard library to use. Learning to leverage interfaces
+  defined in Go's standard library (e.g. ~io.fs~, ~io.Reader~, ~io.Writer~), is
+  vital to writing loosely coupled packages. These packages can then be re-used
+  in contexts different to those you imagined, with minimal fuss from your
+  consumers.
+
+  In our case, maybe our consumer wants the posts to be embedded into the Go
+  binary rather than files in a "real" filesystem? Either way,
+  /our code doesn't need to care/.
+
+  For our tests, the package [[https://pkg.go.dev/testing/fstest][testing/fstest]] offers us an implementation of [[https://pkg.go.dev/io/fs#FS][io/FS]]
+  to use, similar to the tools we're familiar with in [[https://pkg.go.dev/net/http/httptest][net/http/httptest]].
+
+  Given this information, the following feels like a better approach,
+
+  #+begin_src go
+    var posts []blogposts.Post
+    posts = blogposts.NewPostsFromFS(someFS)
+  #+end_src
