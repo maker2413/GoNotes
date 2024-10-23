@@ -1,0 +1,3 @@
+#+TITLE: Generics
+
+This section follows the Generics chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/generics][Learn Go with Tests]].

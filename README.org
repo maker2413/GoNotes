@@ -23,3 +23,4 @@ So far I have gone through the following chapters:
 - 16. :: [[./maths/README.org][Maths]]
 - 17. :: [[./readingFiles/README.org][Reading files]]
 - 18. :: [[./templating/README.org][Templating]]
+- 19. :: [[./generics/README.org][Generics]]
