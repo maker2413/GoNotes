@@ -1,3 +1,162 @@
 #+TITLE: Generics
 
 This section follows the Generics chapter of the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/generics][Learn Go with Tests]].
+
+This chapter will give you an introduction to generics, dispel reservations you
+may have about them, and give you an idea how to simplify some of your code in
+the future. After reading this you'll know how to write:
+- A function that takes generic arguments
+- A generic data-structure
+
+*Recap on type-safety*
+If you've read the previous chapters of this book, or have experience with
+statically typed languages, this should not surprise you. The Go compiler
+expects you to write your functions, structs e.t.c. by describing what types you
+wish to work with.
+
+You can't pass a ~string~ to a function that expects an ~integer~.
+
+Whilst this can feel like ceremony, it can be extremely helpful. By describing
+these constraints you,
+- Make function implementation simpler. By describing to the compiler what types
+  you work with, you *constrain the number of possible valid implementations*.
+  You can't "add" a ~Person~ and a ~BankAccount~. You can't capitalize an
+  ~integer~. In software, constraints are often extremely helpful.
+- Are prevented from accidentally passing data to a function you didn't mean to.
+
+Go offers you a way to be more abstract with your types with [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/structs-methods-and-interfaces][interfaces]], so that
+you can design functions that do not take concrete types but instead, types that
+offer the behaviour you need. This gives you some flexibility whilst maintaining
+type-safety.
+
+* Is a generic function with T any the same as interface{} ?
+  Consider two functions:
+  #+begin_src go
+    func GenericFoo[T any](x, y T)
+
+    func InterfaceyFoo(x, y interface{})
+  #+end_src
+
+  What's the point of generics here? Doesn't ~any~ describe... anything?
+
+  In terms of constraints, ~any~ does mean "anything" and so does ~interface{}~.
+  In fact, ~any~ was added in 1.18 and is /just an alias for ~interface{}~./
+
+  The difference with the generic version is /you're still describing a specific
+  type/ and what that means is we've still constrained this function to only
+  work with /one/ type.
+
+  What this means is you can call ~InterfaceyFoo~ with any combination of types
+  (e.g ~InterfaceyFoo(apple, orange)~). However ~GenericFoo~ still offers some
+  constraints because we've said that it only works with /one/ type, ~T~.
+
+  Valid:
+  - ~GenericFoo(apple1, apple2)~
+  - ~GenericFoo(orange1, orange2)~
+  - ~GenericFoo(1, 2)~
+  - ~GenericFoo("one", "two")~
+
+  Not valid (fails compilation):
+  - ~GenericFoo(apple1, orange1)~
+  - ~GenericFoo("1", 1)~
+
+  If your function returns the generic type, the caller can also use the type as
+  it was, rather than having to make a type assertion because when a function
+  returns ~interface{}~ the compiler cannot make any guarantees about the type.
+
+* Wrapping up
+  This chapter should have given you a taste of generics syntax, and some ideas
+  as to why generics might be helpful. We've written our own Assert functions
+  which we can safely re-use to experiment with other ideas around generics, and
+  we've implemented a simple data structure to store any type of data we wish,
+  in a type-safe manner.
+
+** Generics are simpler than using ~interface{}~ in most cases
+   If you're inexperienced with statically-typed languages, the point of
+   generics may not be immediately obvious, but I hope the examples in this
+   chapter have illustrated where the Go language isn't as expressive as we'd
+   like. In particular using ~interface{}~ makes your code:
+   - Less safe (mix apples and oranges), requires more error handling
+   - Less expressive, ~interface{}~ tells you nothing about the data
+   - More likely to rely on [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/reflection][reflection]], type-assertions etc which makes your
+     code more difficult to work with and more error prone as it pushes checks
+     from compile-time to runtime
+
+   Using statically typed languages is an act of describing constraints. If you
+   do it well, you create code that is not only safe and simple to use but also
+   simpler to write because the possible solution space is smaller.
+
+   Generics gives us a new way to express constraints in our code, which as
+   demonstrated will allow us to consolidate and simplify code that was not
+   possible until Go 1.18.
+
+** Will generics turn Go into Java?
+   - No.
+
+   There's a lot of [[https://en.wikipedia.org/wiki/Fear,_uncertainty,_and_doubt][FUD (fear, uncertainty and doubt)]] in the Go community about
+   generics leading to nightmare abstractions and baffling code bases. This is
+   usually caveatted with "they must be used carefully".
+
+   Whilst this is true, it's not especially useful advice because this is true
+   of any language feature. 
+
+   Not many people complain about our ability to define interfaces which, like
+   generics is a way of describing constraints within our code. When you
+   describe an interface you are making a design choice that could be poor,
+   generics are not unique in their ability to make confusing, annoying to use
+   code.
+
+** You're already using generics
+   When you consider that if you've used arrays, slices or maps; you've already
+   been a consumer of generic code.
+   #+begin_src go
+     var myApples []Apple
+     // You can't do this!
+     append(myApples, Orange{})
+   #+end_src
+
+** Abstraction is not a dirty word
+  It's easy to dunk on [[https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/framework/AbstractSingletonProxyFactoryBean.html][AbstractSingletonProxyFactoryBean]] but let's not pretend a
+  code base with no abstraction at all isn't also bad. It's your job to /gather/
+  related concepts when appropriate, so your system is easier to understand and
+  change; rather than being a collection of disparate functions and types with a
+  lack of clarity.
+
+** [[https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast][Make it work, make it right, make it fast]]
+   People run in to problems with generics when they're abstracting too quickly
+   without enough information to make good design decisions.
+
+   The TDD cycle of red, green, refactor means that you have more guidance as to
+   what code you /actually/ need to deliver your behaviour,
+   *rather than imagining abstractions up front*; but you still need to be
+   careful.
+
+   There's no hard and fast rules here but resist making things generic until
+   you can see that you have a useful generalisation. When we created the
+   various ~Stack~ implementations we importantly started with /concrete/
+   behaviour like ~StackOfStrings~ and ~StackOfInts~ backed by tests. From our
+   /real/ code we could start to see real patterns, and backed by our tests, we
+   could explore refactoring toward a more general-purpose solution.
+
+   People often advise you to only generalise when you see the same code three
+   times, which seems like a good starting rule of thumb.
+
+   "A common path I've taken in other programming languages has been":
+   - One TDD cycle to drive some behaviour
+   - Another TDD cycle to exercise some other related scenarios
+   #+BEGIN_QUOTE
+   Hmm, these things look similar - but a little duplication is better than
+   coupling to a bad abstraction
+   #+END_QUOTE
+   - Sleep on it
+   - Another TDD cycle
+   #+BEGIN_QUOTE
+   OK, I'd like to try to see if I can generalise this thing. Thank goodness I
+   am so smart and good-looking because I use TDD, so I can refactor whenever I
+   wish, and the process has helped me understand what behaviour I actually need
+   before designing too much.
+   #+END_QUOTE
+   - This abstraction feels nice! The tests are still passing, and the code is
+     simpler.
+   - I can now delete a number of tests, I've captured the essence of the
+     behaviour and removed unnecessary detail.

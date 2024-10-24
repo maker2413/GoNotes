@@ -1,26 +1,33 @@
 #+TITLE: Go Notes
 
 This repo is just my playground to learn and try to take notes on things I learn
-in Golang. So far I have been following this guide:
+in Golang. These notes are not going to be a perfect read, but are rather
+intended to be reference documents for snippets of knowledge or examples. These
+notes are just little jots I make while I learn and will include spelling
+mistakes, bad grammar, and a complete disregard for past, present, and future
+tense. So far I have been following this guide:
 https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
 
-So far I have gone through the following chapters:
-- 1. :: [[./helloWorld/README.org][Hello World]]
-- 2. :: [[./integers/README.org][Integers]]
-- 3. :: [[./iteration/README.org][Iteration]]
-- 4. :: [[./arraysSlices/README.org][Arrays and Slices]]
-- 5. :: [[./structsMethodsInterfaces/README.org][Struct, Methods, and Interfaces]]
-- 6. :: [[./pointers/README.org][Pointers & errors]]
-- 7. :: [[./maps/README.org][Maps]]
-- 8. :: [[./dependencyInjection/README.org][Dependency Injection]]
-- 9. :: [[./mocking/README.org][Mocking]]
-- 10. :: [[./concurrency/README.org][Concurrency]]
-- 11. :: [[./select/README.org][Select]]
-- 12. :: [[./reflection/README.org][Reflection]]
-- 13. :: [[./sync/README.org][Sync]]
-- 14. :: [[./context/README.org][Context]]
-- 15. :: [[./propertyTests/README.org][Intro to property based tests]]
-- 16. :: [[./maths/README.org][Maths]]
-- 17. :: [[./readingFiles/README.org][Reading files]]
-- 18. :: [[./templating/README.org][Templating]]
-- 19. :: [[./generics/README.org][Generics]]
+* Go Fundamentals:
+  - 1. :: [[./helloWorld/README.org][Hello World]]
+  - 2. :: [[./integers/README.org][Integers]]
+  - 3. :: [[./iteration/README.org][Iteration]]
+  - 4. :: [[./arraysSlices/README.org][Arrays and Slices]]
+  - 5. :: [[./structsMethodsInterfaces/README.org][Struct, Methods, and Interfaces]]
+  - 6. :: [[./pointers/README.org][Pointers & errors]]
+  - 7. :: [[./maps/README.org][Maps]]
+  - 8. :: [[./dependencyInjection/README.org][Dependency Injection]]
+  - 9. :: [[./mocking/README.org][Mocking]]
+  - 10. :: [[./concurrency/README.org][Concurrency]]
+  - 11. :: [[./select/README.org][Select]]
+  - 12. :: [[./reflection/README.org][Reflection]]
+  - 13. :: [[./sync/README.org][Sync]]
+  - 14. :: [[./context/README.org][Context]]
+  - 15. :: [[./propertyTests/README.org][Intro to property based tests]]
+  - 16. :: [[./maths/README.org][Maths]]
+  - 17. :: [[./readingFiles/README.org][Reading files]]
+  - 18. :: [[./templating/README.org][Templating]]
+  - 19. :: [[./generics/README.org][Generics]]
+  - 20. :: [[./revisitingArrays/README.org][Revisiting arrays and slices with generics]]
+
+* Testing Fundamentals

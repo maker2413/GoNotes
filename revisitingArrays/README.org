@@ -1,0 +1,4 @@
+#+TITLE: Revisiting arrays and slices with generics
+
+This section follows the Revisiting arrays and slices with generics chapter of
+the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/revisiting-arrays-and-slices-with-generics][Learn Go with Tests]].
