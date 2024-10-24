@@ -2,3 +2,93 @@
 
 This section follows the Revisiting arrays and slices with generics chapter of
 the [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/revisiting-arrays-and-slices-with-generics][Learn Go with Tests]].
+
+Take a look at both ~SumAll~ and ~SumAllTails~ that we wrote in
+[[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/arrays-and-slices][arrays and slices]]. If you don't have your version please copy the code from the
+[[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/arrays-and-slices][arrays and slices]] chapter along with the tests.
+#+begin_src go
+  // Sum calculates the total from a slice of numbers.
+  func Sum(numbers []int) int {
+          var sum int
+          for _, number := range numbers {
+                  sum += number
+          }
+          return sum
+  }
+
+  // SumAllTails calculates the sums of all but the first number given a collection of slices.
+  func SumAllTails(numbersToSum ...[]int) []int {
+          var sums []int
+          for _, numbers := range numbersToSum {
+                  if len(numbers) == 0 {
+                          sums = append(sums, 0)
+                  } else {
+                          tail := numbers[1:]
+                          sums = append(sums, Sum(tail))
+                  }
+          }
+
+          return sums
+  }
+#+end_src
+
+Do you see a recurring pattern?
+- Create some kind of "initial" result value.
+- Iterate over the collection, applying some kind of operation (or function) to
+  the result and the next item in the slice, setting a new value for the result.
+- Return the result.
+
+This idea is commonly talked about in functional programming circles, often
+times called 'reduce' or [[https://en.wikipedia.org/wiki/Fold_(higher-order_function)][fold]].
+#+BEGIN_QUOTE
+In functional programming, fold (also termed reduce, accumulate, aggregate,
+compress, or inject) refers to a family of higher-order functions that analyze a
+recursive data structure and through use of a given combining operation,
+recombine the results of recursively processing its constituent parts, building
+up a return value. Typically, a fold is presented with a combining function, a
+top node of a data structure, and possibly some default values to be used under
+certain conditions. The fold then proceeds to combine elements of the data
+structure's hierarchy, using the function in a systematic way.
+#+END_QUOTE
+
+Go has always had higher-order functions, and as of version 1.18 it also has
+[[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/generics][generics]], so it is now possible to define some of these functions discussed in
+our wider field. There's no point burying your head in the sand, this is a very
+common abstraction outside the Go ecosystem and it'll be beneficial to
+understand it.
+
+Now, I know some of you are probably cringing at this.
+#+BEGIN_QUOTE
+Go is supposed to be simple
+#+END_QUOTE
+
+*Don't conflate easiness, with simplicity*. Doing loops and copy-pasting code is
+easy, but it's not necessarily simple. For more on simple vs easy, watch
+[[https://www.youtube.com/watch?v=SxdOUGdseq4][Rich Hickey's masterpiece of a talk - Simple Made Easy]].
+
+*Don't conflate unfamiliarity, with complexity*. Fold/reduce may initially sound
+scary and computer-sciencey but all it really is, is an abstraction over a very
+common operation. Taking a collection, and combining it into one item. When you
+step back, you'll realise you probably do this /a lot/.
+
+* A generic refactor
+  A mistake people often make with shiny new language features is they start by
+  using them without having a concrete use-case. They rely on conjecture and
+  guesswork to guide their efforts.
+
+  Thankfully we've written our "useful" functions and have tests around them, so
+  now we are free to experiment with ideas in the refactoring stage of TDD and
+  know that whatever we're trying, has a verification of its value via our unit
+  tests.
+
+  Using generics as a tool for simplifying code via the refactoring step is far
+  more likely to guide you to useful improvements, rather than premature
+  abstractions.
+
+  We are safe to try things out, re-run our tests, if we like the change we can
+  commit. If not, just revert the change. This freedom to experiment is one of
+  the truly huge values of TDD.
+
+  You should be familiar with the generics syntax [[https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/generics][from the previous chapter]], try
+  and write your own ~Reduce~ function and use it inside ~Sum~ and
+  ~SumAllTails~.
