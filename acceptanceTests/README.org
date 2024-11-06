@@ -1,0 +1,281 @@
+#+TITLE: Introduction to acceptance tests
+
+This section follows the Introduction to acceptance tests chapter of the
+[[https://quii.gitbook.io/learn-go-with-tests/testing-fundamentals/intro-to-acceptance-tests][Learn Go with Tests]].
+
+This chapter will give an intro to graceful shutdown in the context of an HTTP
+server, and how to write "acceptance tests" to give yourself confidence in the
+behaviour of your code.
+
+What we want to do is listen for ~SIGTERM~, and rather than instantly killing
+the server, we want to:
+- Stop listening to any more requests
+- Allow any in-flight requests to finish
+- Then terminate the process
+
+Thankfully, Go already has a mechanism for gracefully shutting down a server
+with [[https://pkg.go.dev/net/http#Server.Shutdown][net/http/Server.Shutdown]].
+#+BEGIN_QUOTE
+Shutdown gracefully shuts down the server without interrupting any active
+connections. Shutdown works by first closing all open listeners, then closing
+all idle connections, and then waiting indefinitely for connections to return to
+idle and then shut down. If the provided context expires before the shutdown is
+complete, Shutdown returns the context's error, otherwise it returns any error
+returned from closing the Server's underlying Listener(s).
+#+END_QUOTE
+
+To handle ~SIGTERM~ we can use [[https://pkg.go.dev/os/signal#Notify][os/signal.Notify]], which will send any incoming
+signals to a channel we provide.
+
+By using these two features from the standard library, you can listen for
+~SIGTERM~ and shutdown gracefully.
+
+The author of learning go with tests wrote:
+[[https://pkg.go.dev/github.com/quii/go-graceful-shutdown]]. It provides a decorator
+function for a ~*http.Server~ to call its ~Shutdown~ method when a ~SIGTERM~
+signal is detected.
+#+begin_src go
+  func main() {
+          var (
+                  ctx        = context.Background()
+                  httpServer = &http.Server{Addr: ":8080", Handler: http.HandlerFunc(acceptancetests.SlowHandler)}
+                  server     = gracefulshutdown.NewServer(httpServer)
+          )
+
+          if err := server.ListenAndServe(ctx); err != nil {
+                  // this will typically happen if our responses aren't written before the ctx deadline, not much can be done
+                  log.Fatalf("uh oh, didn't shutdown gracefully, some responses may have been lost %v", err)
+          }
+
+          // hopefully, you'll always see this instead
+          log.Println("shutdown gracefully! all responses were sent")
+  }
+#+end_src
+
+The specific around the code are not important, but it is worth having a quick
+look over the code before carrying on.
+
+* Acceptance tests
+  If you’ve read the rest of this repo, we have mostly written "unit tests". Unit
+  tests are a fantastic tool for enabling fearless refactoring, driving good
+  modular design, preventing regressions, and facilitating fast feedback.
+
+  By their nature, they only test small parts of your system. Usually, unit tests
+  alone are not enough for an effective testing strategy. Remember, we want our
+  systems to ~always be shippable~. We can't rely on manual testing, so we need
+  another kind of testing: ~acceptance tests~.
+
+** What are they?
+   Acceptance tests are a kind of "black-box test". They are sometimes referred
+   to as "functional tests". They should exercise the system as a user of the
+   system would.
+
+   The term "black-box" refers to the idea that the test code has no access to
+   the internals of the system, it can only use its public interface and make
+   assertions on the behaviours it observes. This means they can only test the
+   system as a whole.
+
+   This is an advantageous trait because it means the tests exercise the system
+   the same as a user would, it can't use any special workarounds that could
+   make a test pass, but not actually prove what you need to prove. This is
+   similar to the principle of preferring your unit test files to live inside a
+   separate test package, for example, ~package mypkg_test~ rather than
+   ~package mypkg~.
+
+** Benefits of acceptance tests
+   - When they pass, you know your entire system behaves how you want it to.
+   - They are more accurate, quicker, and require less effort than manual
+     testing.
+   - When written well, they act as accurate, verified documentation of your
+     system. It doesn't fall into the trap of documentation that diverges from
+     the real behaviour of the system.
+   - No mocking! It's all real.
+
+** Potential drawbacks vs unit tests
+   - They are expensive to write.
+   - They take longer to run.
+   - They are dependent on the design of the system.
+   - When they fail, they typically don't give you a root cause, and can be
+     difficult to debug.
+   - They don't give you feedback on the internal quality of your system. You
+     could write total garbage and still make an acceptance test pass.
+   - Not all scenarios are practical to exercise due to the black-box nature.
+
+   For this reason, it is foolish to only rely on acceptance tests. They do not
+   have many of the qualities unit tests have, and a system with a large number
+   of acceptance tests will tend to suffer in terms of maintenance costs and
+   poor lead time. 
+
+   *Lead time?*
+   Lead time refers to how long it takes from a commit being merged into your
+   main branch to it being deployed in production. This number can vary from
+   weeks and even months for some teams to a matter of minutes.
+
+   A balanced testing approach is required for a reliable system with excellent
+   lead time, and this is usually described in terms of the [[https://martinfowler.com/articles/practical-test-pyramid.html][Test Pyramid]].
+
+* How to write basic acceptance tests
+  How does this relate to the original problem? We've just written a package
+  here, and it is entirely unit-testable. 
+
+  As I mentioned, the unit tests weren't quite giving us the confidence we
+  needed. We want to be /really/ sure the package works when integrated with a
+  real, running program. We should be able to automate the manual checks we were
+  making.
+
+  Let's take a look at the test program:
+  #+begin_src go
+    func main() {
+            var (
+                    ctx        = context.Background()
+                    httpServer = &http.Server{Addr: ":8080", Handler: http.HandlerFunc(acceptancetests.SlowHandler)}
+                    server     = gracefulshutdown.NewServer(httpServer)
+            )
+
+            if err := server.ListenAndServe(ctx); err != nil {
+                    // this will typically happen if our responses aren't written before the ctx deadline, not much can be done
+                    log.Fatalf("uh oh, didn't shutdown gracefully, some responses may have been lost %v", err)
+            }
+
+            // hopefully, you'll always see this instead
+            log.Println("shutdown gracefully! all responses were sent")
+    }
+  #+end_src
+
+  You may have guessed that ~SlowHandler~ has a ~time.Sleep~ to delay
+  responding, so I had time to ~SIGTERM~ and see what happens. The rest is
+  fairly boilerplate:
+  - Make a ~net/http/Server~;
+  - Wrap it in the library (see: [[https://en.wikipedia.org/wiki/Decorator_pattern][Decorator pattern]]);
+  - Use the wrapped version to ~ListenAndServe~.
+
+** High-level steps for the acceptance test
+   - Build the program
+   - Run it (and wait for it listen on ~8080~)
+   - Send an HTTP request to the server
+   - Before the server has a chance to send an HTTP response, send ~SIGTERM~
+   - See if we still get a response
+
+* [[./acceptance.go][Building and running the program]]
+  ~LaunchTestProgram~ is responsible for:
+  - building the program
+  - launching the program
+  - waiting for it to listen on port ~8080~
+  - providing a ~cleanup~ function to kill the program and delete it to ensure
+    that when our tests finish, we're left in a clean state
+  - providing an ~interrupt~ function to send the program a ~SIGTERM~ to let us
+    test the behaviour
+
+  Admittedly, this is not the nicest code in the world, but just focus on the
+  exported function ~LaunchTestProgram~, the un-exported functions it calls are
+  uninteresting boilerplate.
+
+  As discussed, acceptance testing tends to be trickier to set up. This code
+  does make the /testing/ code substantially simpler to read, and often with
+  acceptance tests once you've written the ceremonious code, it's done, and you
+  can forget about it.
+
+** The acceptance test(s)
+   We wanted to have two acceptance tests for two programs, one with graceful
+   shutdown and one without, so we, and the readers can see the difference in
+   behaviour. With ~LaunchTestProgram~ to build and run the programs, it's quite
+   simple to write acceptance tests for both, and we benefit from re-use with
+   some helper functions.
+
+   Here is the test for the server /with/ a graceful shutdown,
+   [[https://github.com/quii/go-graceful-shutdown/blob/main/acceptancetests/withoutgracefulshutdown/main_test.go][you can find the test without on GitHub]]
+
+   With the setup encapsulated away, the tests are comprehensive, describe the
+   behaviour, and are relatively easy to follow.
+
+   ~assert.CanGet/CantGet~ are helper functions I made to DRY up this common
+   assertion for this suite.
+
+   #+begin_src go
+     func CanGet(t testing.TB, url string) {
+             errChan := make(chan error)
+
+             go func() {
+                     res, err := http.Get(url)
+                     if err != nil {
+                             errChan <- err
+                             return
+                     }
+                     res.Body.Close()
+                     errChan <- nil
+             }()
+
+             select {
+             case err := <-errChan:
+                     NoError(t, err)
+             case <-time.After(3 * time.Second):
+                     t.Errorf("timed out waiting for request to %q", url)
+             }
+     }
+   #+end_src
+
+   This will fire off a ~GET~ to ~URL~ on a goroutine, and if it responds
+   without error before 3 seconds, then it will not fail. ~CantGet~ is omitted
+   for brevity, [[https://github.com/quii/go-graceful-shutdown/blob/main/assert/assert.go#L61][but you can view it on GitHub here]].
+
+   It's important to note again, Go has all the tools you need to write
+   acceptance tests out of the box. You don't /need/ a special framework to
+   build acceptance tests.
+
+** Small investment with a big pay-off
+   With these tests, readers can look at the example programs and be confident
+   that the example /actually/ works, so they can be confident in the package's
+   claims.
+
+   Importantly, as the author, we get *fast feedback* and *massive confidence*
+   that the package works in a real-world setting.
+   #+begin_src go
+     go test -count=1 ./...
+     ok  	github.com/quii/go-graceful-shutdown	0.196s
+     ?   	github.com/quii/go-graceful-shutdown/acceptancetests	[no test files]
+     ok  	github.com/quii/go-graceful-shutdown/acceptancetests/withgracefulshutdown	4.785s
+     ok  	github.com/quii/go-graceful-shutdown/acceptancetests/withoutgracefulshutdown	2.914s
+     ?   	github.com/quii/go-graceful-shutdown/assert	[no test files]
+   #+end_src
+
+* Wrapping up
+  In this blog post, we introduced acceptance tests into your testing tool
+  belt. They are invaluable when you start to build real systems and are an
+  important complement to your unit tests.
+
+  The nature of /how/ to write acceptance tests depends on the system you're
+  building, but the principles stay the same. Treat your system like a "black
+  box". If you're making a website, your tests should act like a user, so you'll
+  want to use a headless web browser like [[https://www.selenium.dev/][Selenium]], to click on links, fill in
+  forms, etc. For a RESTful API, you'll send HTTP requests using a client.
+
+** Taking it further for more complicated systems
+   Non-trivial systems don't tend to be single-process applications like the one
+   we've discussed. Typically, you'll depend on other systems such as a
+   database. For these scenarios, you'll need to automate a local environment to
+   test with. Tools like [[https://docs.docker.com/compose/][docker-compose]] are useful for spinning up containers of
+   the environment you need to run your system locally.
+
+** The next chapter
+   In this post the acceptance test was written retrospectively. However, in
+   [[http://www.growing-object-oriented-software.com/][Growing Object-Oriented Software]] the authors show that we can use acceptance
+   tests in a test-driven approach to act as a "north-star" to guide our
+   efforts.
+
+   As systems get more complex, the costs of writing and maintaining acceptance
+   tests can quickly spiral out of control. There are countless stories of
+   development teams being hamstrung by expensive acceptance test suites.
+
+   The next chapter will introduce using acceptance test to guide our design
+   along with principles and techniques for managing the costs of acceptance
+   tests.
+
+** Improving the quality of open-source
+   If you're writing packages you intend to share, I'd encourage you to create
+   simple example programs demonstrating what your package does and invest time
+   in having simple-to-follow acceptance tests to give yourself, and potential
+   users of your work, confidence.
+
+   Like [[https://go.dev/blog/examples][Testable Examples]], seeing this little extra effort in developer
+   experience goes a long way toward building trust in your work, and will
+   reduce your own maintenance costs.

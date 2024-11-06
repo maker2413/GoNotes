@@ -31,3 +31,5 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
   - 20. :: [[./revisitingArrays/README.org][Revisiting arrays and slices with generics]]
 
 * Testing Fundamentals
+  - 1. :: [[./acceptanceTests/README.org][Introduction to acceptance tests]]
+  - 2. :: [[./scalingAcceptance/README.org][Scaling acceptance tests]]
