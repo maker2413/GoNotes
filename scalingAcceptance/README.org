@@ -16,3 +16,158 @@ fit in these situations.
 After reading this, you'll appreciate that acceptance tests are useful for
 verification and can also be used in the development process by helping us
 change our system more deliberately and methodically, reducing wasted effort.
+
+Someday you will recognize the need for acceptance tests; some way to test a
+system from a user's point of view and to verify it works how it's intended, but
+almost without exception, the cost of these tests became a real problem for the
+team.
+- Slow to run.
+- Brittle.
+- Flaky.
+- Expensive to maintain, and seem to make changing the software harder than it
+  ought to be.
+- Can only run in a particular environment, causing slow and poor feedback
+  loops.
+
+Let's say you intend to write an acceptance test around a website you're
+building. You decide to use a headless web browser (like [[https://www.selenium.dev/][Selenium]]) to simulate a
+user clicking buttons on your website to verify it does what it needs to do.
+
+Over time, your website's markup has to change as new features are discovered,
+and engineers bike-shed over whether something should be an ~<article>~ or a
+~<section>~ for the billionth time.
+
+Even though your team are only making minor changes to the system, barely
+noticeable to the actual user, you find yourself wasting lots of time updating
+your acceptance tests.
+
+Think about what prompts acceptance tests to change:
+- An external behaviour change. If you want to change what the system does,
+  changing the acceptance test suite seems reasonable, if not desirable.
+- An implementation detail change / refactoring. Ideally, this shouldn't prompt
+  a change, or if it does, a minor one.
+
+Too often, though, the latter is the reason acceptance tests have to change. To
+the point where engineers even become reluctant to change their system because
+of the perceived effort of updating tests!
+
+These problems stem from not applying well-established and practised engineering
+habits written by the authors mentioned above. You can't write acceptance tests
+like unit tests; they require more thought and different practices.
+
+* Anatomy of good acceptance tests
+  If we want acceptance tests that only change when we change behaviour and not
+  implementation detail, it stands to reason that we need to separate those
+  concerns.
+
+** On types of complexity
+   As software engineers, we have to deal with two kinds of complexity.
+   - *Accidental complexity* is the complexity we have to deal with because
+     we're working with computers, stuff like networks, disks, APIs, etc.
+   - *Essential complexity* is sometimes referred to as "domain logic". It's the
+     particular rules and truths within your domain.
+     - For example, "if an account owner withdraws more money than is available,
+       they are overdrawn". This statement says nothing about computers; this
+       statement was true before computers were even used in banks!
+
+   Essential complexity should be expressible to a non-technical person, and
+   it's valuable to have modelled it in our "domain" code, and in our acceptance
+   tests.
+
+** Separation of concerns
+   We should have the idea of specifications. Specifications describe the
+   behaviour of the system we want without being coupled with accidental
+   complexity or implementation detail.
+
+   This idea should feel reasonable to you. In production code, we frequently
+   strive to separate concerns and decouple units of work. Would you not
+   hesitate to introduce an interface to allow your HTTP handler to decouple it
+   from non-HTTP concerns? Let's take this same line of thinking for our
+   acceptance tests.
+
+** Testing on steroids
+   Decoupling how the specification is executed allows us to reuse it in
+   different scenarios. We can:
+
+   *Make our drivers configurable*
+   This means you can run your acceptance tests locally, in your staging and
+   (ideally) production environments.
+   - Too many teams engineer their systems such that acceptance tests are
+     impossible to run locally. This introduces an intolerably slow feedback
+     loop. Wouldn't you rather be confident your acceptance tests will pass
+     before integrating your code? If the tests start breaking, is it acceptable
+     that you'd be unable to reproduce the failure locally and instead, have to
+     commit changes and cross your fingers that it'll pass 20 minutes later in a
+     different environment?
+   - Remember, just because your tests pass in staging doesn't mean your system
+     will work. Dev/Prod parity is, at best, a white lie. [[https://increment.com/testing/i-test-in-production/][I test in prod]].
+   - There are always differences between the environments that can affect the
+     behaviour of your system. A CDN could have some cache headers incorrectly
+     set; a downstream service you depend on may behave differently; a
+     configuration value may be incorrect. But wouldn't it be nice if you could
+     run your specifications in prod to catch these problems quickly?
+
+   *Plug in different drivers to test other parts of your system*
+   This flexibility allows us to test behaviours at different abstraction and
+   architectural layers, which allows us to have more focused tests beyond
+   black-box tests.
+   - For instance, you may have a web page with an API behind it. Why not use
+     the same specification to test both? You can use a headless web browser for
+     the web page, and HTTP calls for the API.
+   - Taking this idea further, ideally, we want the
+     *code to model essential complexity* (as "domain" code) so we should also
+     be able to use our specifications for unit tests. This will give swift
+     feedback that the essential complexity in our system is modelled and
+     behaves correctly.
+
+** Acceptance tests changing for the right reasons
+   With this approach, the only reason for your specifications to change is if
+   the behaviour of the system changes, which is reasonable.
+   - If your HTTP API has to change, you have one obvious place to update it,
+     the driver.
+   - If your markup changes, again, update the specific driver.
+
+   As your system grows, you'll find yourself reusing drivers for multiple
+   tests, which again means if implementation detail changes, you only have to
+   update one, usually obvious place.
+
+   When done right, this approach gives us flexibility in our implementation
+   detail and stability in our specifications. Importantly, it provides a simple
+   and obvious structure for managing change, which becomes essential as a
+   system and its team grows.
+
+* Enough talk, time to code
+  Unlike other chapters, you'll need [[https://www.docker.com/][Docker]] installed because we'll be running
+  our applications in containers. It's assumed at this point in the book you're
+  comfortable writing Go code, importing from different packages, etc.
+
+  Create a new project with:
+  ~go mod init github.com/maker2413/GoNotes/scalingAcceptance~ (you can put
+  whatever you like here but if you change the path you will need to change all
+  internal imports to match).
+
+  Make a folder ~specifications~ to hold our specifications, and add a file
+  [[./specifications/greet.go][greet.go]]
+
+  My IDE (Emacs) takes care of the fuss of adding dependencies for me, but if
+  you need to do it manually, you'd do:
+  ~go get github.com/alecthomas/assert/v2~
+
+  Given Farley's acceptance test design (Specification->DSL->Driver->System), we
+  now have a decoupled specification from implementation. It doesn't know or
+  care about /how/ we ~Greet~; it's just concerned with the essential complexity of
+  our domain. Admittedly this complexity isn't much right now, but we'll expand
+  upon the spec to add more functionality as we further iterate. It's always
+  important to start small!
+
+  You could view the interface as our first step of a DSL; as the project grows,
+  you may find the need to abstract differently, but for now, this is fine.
+
+  At this point, this level of ceremony to decouple our specification from
+  implementation might make some people accuse us of "overly abstracting".
+  *I promise you that acceptance tests that are too coupled to implementation
+  become a real burden on engineering teams*. I am confident that most
+  acceptance tests out in the wild are expensive to maintain due to this
+  inappropriate coupling; rather than the reverse of being overly abstract.
+
+  We can use this specification to verify any "system" that can ~Greet~.
