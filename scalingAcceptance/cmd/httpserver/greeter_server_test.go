@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/alecthomas/assert/v2"
-	scaling_acceptance "github.com/maker2413/GoNotes/scalingAcceptance"
+	httpserver "github.com/maker2413/GoNotes/scalingAcceptance/adapters"
 	"github.com/maker2413/GoNotes/scalingAcceptance/specifications"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -39,6 +39,6 @@ func TestGreeterServer(t *testing.T) {
 		Timeout: 1 * time.Second,
 	}
 
-	driver := scaling_acceptance.Driver{BaseURL: "http://localhost:8080", Client: &client}
+	driver := httpserver.Driver{BaseURL: "http://localhost:8080", Client: &client}
 	specifications.GreetSpecification(t, driver)
 }

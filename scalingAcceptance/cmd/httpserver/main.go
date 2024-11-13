@@ -3,10 +3,10 @@ package main
 import (
 	"net/http"
 
-	scaling_acceptance "github.com/maker2413/GoNotes/scalingAcceptance"
+	httpserver "github.com/maker2413/GoNotes/scalingAcceptance/adapters"
 )
 
 func main() {
-	handler := http.HandlerFunc(scaling_acceptance.Handler)
+	handler := http.HandlerFunc(httpserver.Handler)
 	http.ListenAndServe(":8080", handler)
 }

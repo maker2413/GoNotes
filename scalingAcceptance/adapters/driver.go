@@ -1,4 +1,4 @@
-package scaling_acceptance
+package httpserver
 
 import (
 	"io"

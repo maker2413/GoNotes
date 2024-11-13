@@ -178,7 +178,23 @@ like unit tests; they require more thought and different practices.
       *HTTP client*. This code will know how to work with our API. Drivers
       translate DSLs into system-specific calls; in our case, the driver will
       implement the interface specifications define.
-   2. An *HTTP server* with a greet API
+   2. An *HTTP server* with a greet API.
    3. A *test*, which is responsible for managing the life-cycle of spinning up
       the server and then plugging the driver into the specification to run it
-      as a test
+      as a test.
+
+* Misc Notes
+  Here is some random quotes and notes from the scaling acceptance test chapter.
+  #+BEGIN_QUOTE
+  In [[https://en.wikipedia.org/wiki/Software_engineering][software engineering]], the *adapter pattern* is a [[https://en.wikipedia.org/wiki/Software_design_pattern][software design pattern]]
+  (also known as [[https://en.wikipedia.org/wiki/Wrapper_function][wrapper]], an alternative naming shared with the
+  [[https://en.wikipedia.org/wiki/Decorator_pattern][decorator pattern]]) that allows the [[https://en.wikipedia.org/wiki/Interface_(computing)][interface]] of an existing [[https://en.wikipedia.org/wiki/Class_(computer_programming)][class]] to be used
+  as another interface.[1] It is often used to make existing classes work with
+  others without modifying their [[https://en.wikipedia.org/wiki/Source_code][source code]].
+  #+END_QUOTE
+
+  Sometimes, it makes sense to do some refactoring before making a change.
+  #+BEGIN_QUOTE
+  First make the change easy, then make the easy change
+  #+END_QUOTE
+  ~Kent Beck
