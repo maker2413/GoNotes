@@ -33,3 +33,6 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
 * Testing Fundamentals
   - 1. :: [[./acceptanceTests/README.org][Introduction to acceptance tests]]
   - 2. :: [[./scalingAcceptance/README.org][Scaling acceptance tests]]
+
+* Build an Application
+  - 1. :: [[./httpServer/README.org][HTTP server]]
