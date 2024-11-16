@@ -36,3 +36,7 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
 
 * Build an Application
   - 1. :: [[./httpServer/README.org][HTTP server]]
+
+* Practice programs
+  This is just some random practice programs I have done to test myself. To view
+  these please go [[./PracticePrograms/README.org][here]].

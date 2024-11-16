@@ -1,0 +1,7 @@
+#+TITLE: Practice Programs
+
+These are just some little programs I have done to practice the things I have
+learned.
+
+* Programs
+  - 1. :: [[./dataStructures/README.org][Data Structures]]

@@ -214,3 +214,30 @@ like unit tests; they require more thought and different practices.
    If you haven't used gRPC before, you'll need to install a
    *Protocol buffer compiler* and some *Go plugins*.
    [[https://grpc.io/docs/languages/go/quickstart/][The gRPC website has clear instructions on how to do this]].
+
+** Separating different kinds of tests
+   Acceptance tests are great in that they test the whole system works from a
+   pure user-facing, behavioural POV, but they do have their downsides compared
+   to unit tests:
+   - Slower
+   - Quality of feedback is often not as focused as a unit test
+   - Doesn't help you with internal quality, or design
+
+   [[https://martinfowler.com/articles/practical-test-pyramid.html][The Test Pyramid]] guides us on the kind of mix we want for our test suite, you
+   should read Fowler's post for more detail, but the very simplistic summary
+   for this post is "lots of unit tests and a few acceptance tests".
+
+   For that reason, as a project grows you often may be in situations where the
+   acceptance tests can take a few minutes to run. To offer a friendly developer
+   experience for people checking out your project, you can enable developers to
+   run the different kinds of tests separately.
+
+   It's preferable that running ~go test ./...~ should be runnable with no
+   further set up from an engineer, beyond say a few key dependencies such as
+   the Go compiler (obviously) and perhaps Docker.
+
+   Go provides a mechanism for engineers to run only "short" tests with the
+   [[https://pkg.go.dev/testing#Short][short flag]].
+   #+begin_src bash
+     go test -short ./...
+   #+end_src
