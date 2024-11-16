@@ -198,3 +198,19 @@ like unit tests; they require more thought and different practices.
   First make the change easy, then make the easy change
   #+END_QUOTE
   ~Kent Beck
+
+** GRPC
+   If you're unfamiliar with gRPC, I'd start by looking at the
+   [[https://grpc.io/][gRPC website]]. Still, for this chapter, it's just another kind of adapter into
+   our system, a way for other systems to call (remote procedure call) our
+   excellent domain code.
+
+   The twist is you define a "service definition" using Protocol Buffers. You
+   then generate server and client code from the definition. This not only works
+   for Go but for most mainstream languages too. This means you can share a
+   definition with other teams in your company who may not even write Go and can
+   still do service-to-service communication smoothly.
+
+   If you haven't used gRPC before, you'll need to install a
+   *Protocol buffer compiler* and some *Go plugins*.
+   [[https://grpc.io/docs/languages/go/quickstart/][The gRPC website has clear instructions on how to do this]].

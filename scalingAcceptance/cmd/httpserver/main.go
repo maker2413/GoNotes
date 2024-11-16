@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	httpserver "github.com/maker2413/GoNotes/scalingAcceptance/adapters"
+	httpserver "github.com/maker2413/GoNotes/scalingAcceptance/adapters/httpserver"
 )
 
 func main() {

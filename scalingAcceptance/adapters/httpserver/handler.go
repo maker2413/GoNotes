@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	scaling_acceptance "github.com/maker2413/GoNotes/scalingAcceptance"
+	scaling_acceptance "github.com/maker2413/GoNotes/scalingAcceptance/domain/interactions"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
