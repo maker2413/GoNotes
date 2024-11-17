@@ -1,1 +1,4 @@
 #+TITLE: Data Structures
+
+This is just program that builds out some simple data structures like stacks,
+queues, and linked lists.
