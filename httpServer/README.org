@@ -1,3 +1,83 @@
 #+TITLE: HTTP Server
 
 This section follows the HTTP server tests chapter of the [[https://quii.gitbook.io/learn-go-with-tests/build-an-application/http-server][Learn Go with Tests]].
+
+You have been asked to create a web server where users can track how many games
+players have won.
+- ~GET /players/{name}~ should return a number indicating the total number of
+  wins.
+- ~POST /players/{name}~ should record a win for that name, incrementing for
+  every subsequent ~POST~.
+
+We will follow the TDD approach, getting working software as quickly as we can
+and then making small iterative improvements until we have the solution. By
+taking this approach we
+- Keep the problem space small at any given time.
+- Don't go down rabbit holes.
+- If we ever get stuck/lost, doing a revert wouldn't lose loads of work.
+
+* Red, green, refactor
+  Throughout this book, we have emphasised the TDD process of write a test &
+  watch it fail (red), write the /minimal/ amount of code to make it work
+  (green) and then refactor.
+
+  This discipline of writing the minimal amount of code is important in terms of
+  the safety TDD gives you. You should be striving to get out of "red" as soon
+  as you can.
+
+  Kent Beck describes it as:
+  #+BEGIN_QUOTE
+  Make the test work quickly, committing whatever sins necessary in process.
+  #+END_QUOTE
+
+  You can commit these sins because you will refactor afterwards backed by the
+  safety of the tests.
+
+** What if you don't do this?
+   The more changes you make while in red, the more likely you are to add more
+   problems, not covered by tests.
+
+   The idea is to be iteratively writing useful code with small steps, driven by
+   tests so that you don't fall into a rabbit hole for hours.
+
+** Chicken and egg
+   How can we incrementally build this? We can't ~GET~ a player without having
+   stored something and it seems hard to know if ~POST~ has worked without the
+   ~GET~ endpoint already existing.
+
+   This is where /mocking/ shines.
+   - ~GET~ will need a ~PlayerStore~ /thing/ to get scores for a player. This
+     should be an interface so when we test we can create a simple stub to test
+     our code without needing to have implemented any actual storage code.
+   - For ~POST~ we can /spy/ on its calls to ~PlayerStore~ to make sure it
+     stores players correctly. Our implementation of saving won't be coupled to
+     retrieval.
+   - For having some working software quickly we can make a very simple
+     in-memory implementation and then later we can create an implementation
+     backed by whatever storage mechanism we prefer.
+
+* Write the test first
+  We can write a test and make it pass by returning a hard-coded value to get us
+  started. Kent Beck refers this as "Faking it". Once we have a working test we
+  can then write more tests to help us remove that constant.
+
+  By doing this very small step, we can make the important start of getting an
+  overall project structure working correctly without having to worry too much
+  about our application logic.
+
+  To create a web server in Go you will typically call [[https://pkg.go.dev/net/http#ListenAndServe][ListenAndServe]].
+  #+begin_src go
+    func ListenAndServe(addr string, handler Handler) error
+  #+end_src
+
+  This will start a web server listening on a port, creating a goroutine for
+  every request and running it against a ~Handler~.
+  #+begin_src go
+    type Handler interface {
+            ServeHTTP(ResponseWriter, *Request)
+    }
+  #+end_src
+
+  A type implements the Handler interface by implementing the ~ServeHTTP~ method
+  which expects two arguments, the first is where we /write our response/ and
+  the second is the HTTP request that was sent to the server.

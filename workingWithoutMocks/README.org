@@ -1,0 +1,171 @@
+#+TITLE: Working without mocks
+
+This section follows the Working without mocks chapter of the
+[[https://quii.gitbook.io/learn-go-with-tests/testing-fundamentals/working-without-mocks][Learn Go with Tests]].
+
+This chapter delves into the world of test doubles and explores how they
+influence the testing and development process. We'll uncover the limitations of
+traditional mocks, stubs, and spies and introduce a more efficient and adaptable
+approach using fakes and contracts.
+
+* tl;dr
+  - Mocks, spies and stubs encourage you to encode assumptions of the behaviour
+    of your dependencies ad-hocly in each test.
+  - These assumptions are usually not validated beyond manual checking, so they
+    threaten your test suite's usefulness.
+  - Fakes and contracts give us a more sustainable method for creating test
+    doubles with validated assumptions and better reuse than the alternatives.
+
+  This is a longer chapter than normal, so as a palette cleanser, you should
+  explore an [[https://github.com/quii/go-fakes-and-contracts][example repo first]]. In particular, check out the [[https://github.com/quii/go-fakes-and-contracts/blob/main/domain/planner/planner_test.go][planner test]].
+
+  In [[../mocking/README.org][Mocking]], we learned how mocks, stubs and spies are useful tools for
+  controlling and inspecting the behaviour of units of code in conjunction with
+  [[../dependencyInjection/README.org][Dependency Injection]].
+
+  As a project grows, though, these kinds of test doubles can become a
+  maintenance burden, and we should instead look to other design ideas to keep
+  our system easy to reason and test.
+
+  *Fakes* and *contracts* allow developers to test their systems with more
+  realistic scenarios, improve local development experience with faster and more
+  accurate feedback loops, and manage the complexity of evolving dependencies.
+
+* A primer on test doubles
+  It's easy to roll your eyes when people like me are pedantic about the
+  nomenclature of test doubles, but the distinctive kinds of test doubles help
+  us talk about this topic and the trade-offs we're making with clarity.
+
+  *Test doubles* is the collective noun for the different ways you can construct
+  dependencies that you can control for a *subject under test (SUT)*, the thing
+  you're testing. Test doubles are often a better alternative than using the
+  real dependency as it can avoid issues like.
+  - Needing the internet to use an API.
+  - Avoid latency and other performance issues.
+  - Unable to exercise non-happy path cases.
+  - Decoupling your build from another team's.
+    - You wouldn't want to prevent deployments if an engineer in another team
+      accidentally shipped a bug.
+
+  In Go, you'll typically model a dependency with an interface, then implement
+  your version to control the behaviour in a test.
+  *Here are the kinds of test doubles covered in this post*.
+
+  Given this interface of a hypothetical recipe API:
+  #+begin_src go
+    type RecipeBook interface {
+            GetRecipes() ([]Recipe, error)
+            AddRecipes(...Recipe) error
+    }
+  #+end_src
+
+  We can construct test doubles in various ways, depending on how we're trying
+  to test something that uses a ~RecipeBook~.
+
+  *Stubs* return the same canned data every time they are called:
+  #+begin_src go
+    type StubRecipeStore struct {
+            recipes []Recipe
+            err     error
+    }
+
+    func (s *StubRecipeStore) GetRecipes() ([]Recipe, error) {
+            return s.recipes, s.err
+    }
+
+    // AddRecipes omitted for brevity
+  #+end_src
+
+  #+begin_src go
+    // in test, we can set up the stub to always return specific recipes, or an error
+    stubStore := &StubRecipeStore{
+            recipes: someRecipes,
+    }
+  #+end_src
+
+  *Spies* are like stubs but also record how they were called so the test can
+  assert that the SUT calls the dependencies in specific ways:
+  #+begin_src go
+    type SpyRecipeStore struct {
+            AddCalls [][]Recipe
+            err      error
+    }
+
+    func (s *SpyRecipeStore) AddRecipes(r ...Recipe) error {
+            s.AddCalls = append(s.AddCalls, r)
+            return s.err
+    }
+
+    // GetRecipes omitted for brevity
+  #+end_src
+
+  #+begin_src go
+    // in test
+    spyStore := &SpyRecipeStore{}
+    sut := NewThing(spyStore)
+    sut.DoStuff()
+
+    // now we can check the store had the right recipes added by inspectiong spyStore.AddCalls
+  #+end_src
+
+  *Mocks* are like a superset of the above, but they only respond with specific
+  data to specific invocations. If the SUT calls the dependencies with the wrong
+  arguments, it'll typically panic:
+  #+begin_src go
+    // set up the mock with expected calls
+    mockStore := &MockRecipeStore{}
+    mockStore.WhenCalledWith(someRecipes).Return(someError)
+
+    // when the sut uses the dependency, if it doesn't call it with someRecipes, usually mocks will panic
+  #+end_src
+
+  *Fakes* are like a genuine version of the dependency but implemented in a way
+  more suited to fast running, reliable tests and local development. Often, your
+  system will have some abstraction around persistence, which will be
+  implemented with a database, but in your tests, you could use an in-memory
+  fake instead:
+  #+begin_src go
+    type FakeRecipeStore struct {
+            recipes []Recipe
+    }
+
+    func (f *FakeRecipeStore) GetRecipes() ([]Recipe, error) {
+            return f.recipes, nil
+    }
+
+    func (f *FakeRecipeStore) AddRecipes(r ...Recipe) error {
+            f.recipes = append(f.recipes, r...)
+            return nil
+    }
+  #+end_src
+
+  Fakes are useful because:
+  - Their statefulness is useful for tests involving multiple subjects and
+    invocations, such as an integration test. Managing state with the other
+    kinds of test doubles is generally discouraged.
+  - If they have a sensible API, offer a more natural way of asserting
+    state. Rather than spying on specific calls to a dependency, you can query
+    its final state to see if the real effect you want happened.
+  - You can use them to run your application locally without spinning up or
+    depending on real dependencies. This will usually improve developer
+    experience (DX) because the fakes will be faster and more reliable than
+    their real counterparts.
+
+  Spies, Mocks and Stubs can typically be autogenerated from an interface using
+  a tool or using reflection. However, as Fakes encode the behaviour of the
+  dependency you're trying to make a double for, you'll have to write at least
+  most of the implementation yourself
+
+* The problem with stubs and mocks
+  In [[https://quii.gitbook.io/learn-go-with-tests/meta/anti-patterns][Anti-patterns]], there are details on how using test doubles must be done
+  carefully. Creating a messy test suite is easy if you don't use them
+  tastefully. As a project grows though, other problems can creep in.
+
+  When you encode behaviour into test doubles, you are adding your assumptions
+  as to how the real dependency works into the test. If there is a discrepancy
+  between the behaviour of the double and the real dependency, or if one happens
+  over time (e.g. the real dependency changes, which has to be expected),
+  *you may have passing tests but failing software*.
+
+  Stubs, spies and mocks, in particular, represent other challenges, mainly as a
+  project grows. To illustrate this, I will describe a project I worked on.
