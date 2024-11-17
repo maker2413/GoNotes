@@ -2,17 +2,18 @@ package main
 
 import "errors"
 
-type Stack struct {
-	contents []int
+type Stack[T any] struct {
+	contents []T
 }
 
-func (s *Stack) Push(n int) {
+func (s *Stack[T]) Push(n T) {
 	s.contents = append(s.contents, n)
 }
 
-func (s *Stack) Pop() (int, error) {
+func (s *Stack[T]) Pop() (T, error) {
 	if len(s.contents) <= 0 {
-		return 0, errors.New("Can not pop a Stack with no items!")
+		var zero T
+		return zero, errors.New("Can not pop a Stack with no items!")
 	}
 
 	element := len(s.contents) - 1
