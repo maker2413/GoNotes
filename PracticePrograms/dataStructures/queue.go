@@ -11,7 +11,7 @@ func (q *Queue[T]) Enqueue(n T) {
 }
 
 func (q *Queue[T]) Dequeue() (T, error) {
-	if len(q.contents) <= 0 {
+	if q.IsEmpty() {
 		var zero T
 		return zero, errors.New("Can not dequeue an empty Queue")
 	}
@@ -20,4 +20,8 @@ func (q *Queue[T]) Dequeue() (T, error) {
 	q.contents = q.contents[1:]
 
 	return dequeuevalue, nil
+}
+
+func (q *Queue[T]) IsEmpty() bool {
+	return len(q.contents) <= 0
 }

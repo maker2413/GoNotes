@@ -1,57 +1,57 @@
 package main
 
 import (
-	"reflect"
 	"testing"
 )
 
 func TestQueue(t *testing.T) {
-	t.Run("Enqueue Integers", func(t *testing.T) {
+	t.Run("Test Integers", func(t *testing.T) {
 		got := new(Queue[int])
-		want := []int{5, 9, 2, 1}
 
+		AssertTrue(t, got.IsEmpty())
 		got.Enqueue(5)
+		AssertFalse(t, got.IsEmpty())
+		AssertEqual(t, got.contents[0], 5)
 		got.Enqueue(9)
 		got.Enqueue(2)
 		got.Enqueue(1)
-
-		if !reflect.DeepEqual(got.contents, want) {
-			t.Errorf("expected: '%d', got '%d'", want, got.contents)
-		}
+		AssertEqual(t, len(got.contents), 4)
+		value, _ := got.Dequeue()
+		AssertEqual(t, value, 5)
 	})
-	t.Run("Enqueue Strings", func(t *testing.T) {
+	t.Run("Test Strings", func(t *testing.T) {
 		got := new(Queue[string])
-		want := []string{"hello", "world", "!"}
 
+		AssertTrue(t, got.IsEmpty())
 		got.Enqueue("hello")
+		AssertFalse(t, got.IsEmpty())
+		AssertEqual(t, got.contents[0], "hello")
 		got.Enqueue("world")
 		got.Enqueue("!")
-
-		if !reflect.DeepEqual(got.contents, want) {
-			t.Errorf("expected: '%s', got '%s'", want, got.contents)
-		}
+		AssertEqual(t, len(got.contents), 3)
+		value, _ := got.Dequeue()
+		AssertEqual(t, value, "hello")
 	})
-	t.Run("Dequeue", func(t *testing.T) {
-		got := new(Queue[int])
-		want := []int{9, 2, 1}
+	t.Run("Test Floats", func(t *testing.T) {
+		got := new(Queue[float32])
 
-		got.Enqueue(5)
-		got.Enqueue(9)
-		got.Enqueue(2)
-		got.Enqueue(1)
+		AssertTrue(t, got.IsEmpty())
+		got.Enqueue(12.8417)
+		AssertFalse(t, got.IsEmpty())
+		AssertEqual(t, got.contents[0], 12.8417)
+		got.Enqueue(2.1)
+		got.Enqueue(0.241211237)
+		AssertEqual(t, len(got.contents), 3)
+		value, _ := got.Dequeue()
+		AssertEqual(t, value, 12.8417)
+	})
+	t.Run("Con not Dequeue empty queue", func(t *testing.T) {
+		q := new(Queue[int])
 
-		dequeue, err := got.Dequeue()
+		_, err := q.Dequeue()
 
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if dequeue != 5 {
-			t.Errorf("expected to dequeue: 5, got: %d", dequeue)
-		}
-
-		if !reflect.DeepEqual(got.contents, want) {
-			t.Errorf("expected: '%d', got '%d'", want, got.contents)
+		if err == nil {
+			t.Error("Should not be able to Dequeue empty queue")
 		}
 	})
 }
