@@ -1,19 +1,61 @@
 package main
 
 import (
-	"reflect"
 	"testing"
 )
 
 func TestLinkedList(t *testing.T) {
-	t.Run("Create Linked List", func(t *testing.T) {
-		got := new(LinkedList[int])
-		want := []int{1}
-
-		got.contents = append(got.contents, 1)
-
-		if !reflect.DeepEqual(got.contents, want) {
-			t.Errorf("expected: '%q', got: '%q'", got.contents, want)
-		}
+	t.Run("Test Linked List", func(t *testing.T) {
+		list := LinkedList{}
+		AssertTrue(t, list.IsEmpty())
+		AssertEqual(t, list.Len(), 0)
+		list.InsertFront("hello")
+		AssertFalse(t, list.IsEmpty())
+		AssertEqual(t, list.head.content, "hello")
+		AssertEqual(t, list.tail.content, "hello")
+		AssertEqual(t, list.Len(), 1)
+		list.InsertFront("world")
+		AssertEqual(t, list.head.content, "world")
+		AssertEqual(t, list.Len(), 2)
+		value, err := list.RemoveFront()
+		AssertEqual(t, err, nil)
+		AssertEqual(t, value, "world")
+		AssertEqual(t, list.Len(), 1)
+		value, err = list.RemoveFront()
+		AssertEqual(t, err, nil)
+		AssertEqual(t, value, "hello")
+		AssertEqual(t, list.Len(), 0)
+		value, err = list.RemoveFront()
+		AssertEqual(t, err.Error(), "Can not remove from empty list")
+		AssertEqual(t, value, nil)
+		AssertEqual(t, list.Len(), 0)
+		list.InsertBack(3.14)
+		AssertEqual(t, list.tail.content, 3.14)
+		AssertEqual(t, list.head.content, 3.14)
+		AssertEqual(t, list.Len(), 1)
+		list.InsertBack("Maker")
+		AssertEqual(t, list.tail.content, "Maker")
+		AssertEqual(t, list.head.content, 3.14)
+		AssertEqual(t, list.Len(), 2)
+		list.InsertBack(8)
+		AssertEqual(t, list.tail.content, 8)
+		AssertEqual(t, list.head.content, 3.14)
+		AssertEqual(t, list.Len(), 3)
+		value, err = list.RemoveBack()
+		AssertEqual(t, err, nil)
+		AssertEqual(t, value, 8)
+		AssertEqual(t, list.Len(), 2)
+		value, err = list.RemoveBack()
+		AssertEqual(t, err, nil)
+		AssertEqual(t, value, "Maker")
+		AssertEqual(t, list.Len(), 1)
+		value, err = list.RemoveBack()
+		AssertEqual(t, err, nil)
+		AssertEqual(t, value, 3.14)
+		AssertEqual(t, list.Len(), 0)
+		value, err = list.RemoveBack()
+		AssertEqual(t, err.Error(), "Can not remove from empty list")
+		AssertEqual(t, value, nil)
+		AssertEqual(t, list.Len(), 0)
 	})
 }
