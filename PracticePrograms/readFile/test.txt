@@ -1,0 +1,4 @@
+This is a sample file.
+
+I should be able to open this is os.Open.
+After I open this file I should be able to print its contents.
