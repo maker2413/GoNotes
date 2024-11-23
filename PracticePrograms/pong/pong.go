@@ -12,10 +12,10 @@ import (
 )
 
 const (
-	screenWidth  = 640
-	screenHeight = 480
-	ballSpeed    = 3
-	paddleSpeed  = 6
+	screenWidth   = 640
+	screenHeight  = 480
+	initBallSpeed = 3
+	paddleSpeed   = 6
 )
 
 type Object struct {
@@ -28,8 +28,9 @@ type Paddle struct {
 
 type Ball struct {
 	Object
-	dxdt int // x velocity per tick
-	dydt int // y velocity per tick
+	dxdt      int // x velocity per tick
+	dydt      int // y velocity per tick
+	ballSpeed int
 }
 
 type Game struct {
@@ -37,6 +38,7 @@ type Game struct {
 	ball      Ball
 	score     int
 	highScore int
+	newGame   int
 }
 
 func main() {
@@ -52,13 +54,14 @@ func main() {
 	}
 	ball := Ball{
 		Object: Object{
-			X: 0,
+			X: 10,
 			Y: 200,
 			W: 15,
 			H: 15,
 		},
-		dxdt: ballSpeed,
-		dydt: ballSpeed,
+		ballSpeed: initBallSpeed,
+		dxdt:      initBallSpeed,
+		dydt:      initBallSpeed,
 	}
 
 	g := &Game{
@@ -95,7 +98,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Update() error {
 	g.paddle.MoveOnKeyPress()
-	g.ball.Move()
+	if g.newGame >= 60 {
+		g.ball.Move()
+	} else {
+		g.newGame++
+	}
 	g.CollideWithWall()
 	g.CollideWithPaddle()
 	return nil
@@ -116,10 +123,14 @@ func (b *Ball) Move() {
 }
 
 func (g *Game) Reset() {
-	g.ball.X = 0
+	g.ball.ballSpeed = initBallSpeed
+	g.ball.dxdt = initBallSpeed
+	g.ball.dydt = initBallSpeed
+	g.ball.X = 10
 	g.ball.Y = 200
 
 	g.score = 0
+	g.newGame = 0
 }
 
 func (g *Game) CollideWithWall() {
@@ -127,18 +138,19 @@ func (g *Game) CollideWithWall() {
 	if g.ball.X >= screenWidth {
 		g.Reset()
 	} else if g.ball.X <= 0 {
-		g.ball.dxdt = ballSpeed
+		g.ball.dxdt = g.ball.ballSpeed
 	} else if g.ball.Y <= 0 {
-		g.ball.dydt = ballSpeed
+		g.ball.dydt = g.ball.ballSpeed
 	} else if g.ball.Y >= screenHeight {
-		g.ball.dydt = -ballSpeed
+		g.ball.dydt = -g.ball.ballSpeed
 	}
 }
 
 func (g *Game) CollideWithPaddle() {
-	if g.ball.X >= g.paddle.X && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
+	if g.ball.X >= g.paddle.X && g.ball.X <= (g.paddle.X+g.paddle.W) && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
 		g.ball.dxdt = -g.ball.dxdt
 		g.score++
+		g.ball.ballSpeed++
 		if g.score > g.highScore {
 			g.highScore = g.score
 		}
