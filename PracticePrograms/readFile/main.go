@@ -7,19 +7,19 @@ import (
 	"os"
 )
 
-const fileError string = "Please provide a valid file name to read from!"
-
 func main() {
 	if len(os.Args) <= 1 {
-		log.Fatal(fileError)
+		log.Fatal("Please provide a valid file name(s) to read from!")
 	}
 
-	fmt.Printf("Opening: %s\n", os.Args[1])
-	f, err := os.Open(os.Args[1])
+	fmt.Printf("Opening: %s\n", os.Args[1:])
+	for _, arg := range os.Args[1:] {
+		f, err := os.Open(arg)
 
-	if err != nil {
-		log.Fatal(fileError)
+		if err != nil {
+			log.Fatalf("File: %s does not exist!", arg)
+		}
+
+		io.Copy(os.Stdout, f)
 	}
-
-	io.Copy(os.Stdout, f)
 }
