@@ -14,7 +14,7 @@ import (
 const (
 	screenWidth   = 640
 	screenHeight  = 480
-	initBallSpeed = 3
+	initBallSpeed = 2
 	paddleSpeed   = 6
 )
 
@@ -31,6 +31,7 @@ type Ball struct {
 	dxdt      int // x velocity per tick
 	dydt      int // y velocity per tick
 	ballSpeed int
+	iFrames   int
 }
 
 type Game struct {
@@ -118,6 +119,9 @@ func (p *Paddle) MoveOnKeyPress() {
 }
 
 func (b *Ball) Move() {
+	if b.iFrames <= 10 {
+		b.iFrames++
+	}
 	b.X += b.dxdt
 	b.Y += b.dydt
 }
@@ -135,20 +139,21 @@ func (g *Game) Reset() {
 
 func (g *Game) CollideWithWall() {
 	// Right wall cases a game over
-	if g.ball.X >= screenWidth {
+	if g.ball.X >= screenWidth-g.ball.W {
 		g.Reset()
 	} else if g.ball.X <= 0 {
 		g.ball.dxdt = g.ball.ballSpeed
 	} else if g.ball.Y <= 0 {
 		g.ball.dydt = g.ball.ballSpeed
-	} else if g.ball.Y >= screenHeight {
+	} else if g.ball.Y >= screenHeight-g.ball.H {
 		g.ball.dydt = -g.ball.ballSpeed
 	}
 }
 
 func (g *Game) CollideWithPaddle() {
-	if g.ball.X >= g.paddle.X && g.ball.X <= (g.paddle.X+g.paddle.W) && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
+	if g.ball.X >= g.paddle.X-g.ball.W && g.ball.X <= (g.paddle.X+g.paddle.W)-g.ball.W && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H && g.ball.iFrames > 5 {
 		g.ball.dxdt = -g.ball.dxdt
+		g.ball.iFrames = 0
 		g.score++
 		g.ball.ballSpeed++
 		if g.score > g.highScore {
