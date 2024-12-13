@@ -27,3 +27,9 @@ This section uses concurrency to speed up our program. This section covers:
   #+BEGIN_QUOTE
   [[https://wiki.c2.com/?PrematureOptimization][Premature optimization is the root of all evil]] -- Donald Knuth
   #+END_QUOTE
+
+* When to use concurrency
+  A golden rule for concurrency is: if you don't need it, don't use it.
+
+  Keep your application's complexity to an absolute minimum; it's easier to
+  write, easier to understand, and easier to maintain.
