@@ -15,6 +15,7 @@ through the "[[https://www.udemy.com/course/working-with-concurrency-in-go-golan
   - 7. :: [[./channel-select][Select Example]]
   - 8. :: [[./buffered-channels/][Buffered Channels]]
   - 9. :: [[./sleeping-barber/][Sleeping Barber Problem]]
+  - 10. :: [[./final-project/][Final Project]]
 
 * Notes:
   In go every single program even a simple little hello world program has at
