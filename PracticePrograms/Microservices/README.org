@@ -1,8 +1,0 @@
-#+TITLE: Microservices
-
-Microservices are:
-- Breaking up from functions/packages to completely separate programs
-- Communicate via JSON/REST, RPC, gRPC, and over a messaging queue
-- Easier to scale
-- Easier to maintain
-- Harder to write
