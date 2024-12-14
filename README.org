@@ -61,3 +61,4 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
   I also have worked through a couple of Udemy courses on Go and I have included
   my notes on those:
   - 1. :: [[./WorkingWithConcurrency/README.org][Working with Concurrency in Go]]
+  - 2. :: [[./Microservices/README.org][Working with Microservices in Go]]
