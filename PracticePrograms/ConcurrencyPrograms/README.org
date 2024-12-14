@@ -3,3 +3,9 @@
 In go every single program even a simple little hello world program has at least
 one thread. This is the main thread of your program that gets created and
 executes your code at execution.
+
+* Channels
+  - A means of allowing communication to and from a GoRoutine
+  - Channels can be buffered, or unbuffered
+  - Once you're done with a channel, you must close it
+  - Channels typically only accept a given type or interface
