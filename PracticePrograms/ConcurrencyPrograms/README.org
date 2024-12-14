@@ -1,10 +1,28 @@
 #+TITLE: Concurrency Notes
 
-In go every single program even a simple little hello world program has at least
-one thread. This is the main thread of your program that gets created and
-executes your code at execution.
+This directory just contains Notes and sample programs I made while working
+through the "[[https://www.udemy.com/course/working-with-concurrency-in-go-golang/][Working with Concurrency in Go]]" course on Udemy.
 
-* Channels
+* Programs:
+  I would work through the programs in this directory in the following order to
+  follow along with the structure of the course:
+  - 1. :: [[./firstExample][First Example]]
+  - 2. :: [[./challenge-1/][Challenge 1]]
+  - 3. :: [[./dining/][Dining Philosopher Problem]]
+  - 4. :: [[./mutex/][Mutex Locks]]
+  - 5. :: [[./producer-consumer/][Producer Consumer Problem]]
+  - 6. :: [[./simple-channels/][Simple introduction to Channels]]
+  - 7. :: [[./channel-select][Select Example]]
+  - 8. :: [[./buffered-channels/][Buffered Channels]]
+
+* Notes:
+  In go every single program even a simple little hello world program has at
+  least one thread. This is the main thread of your program that gets created
+  and executes your code at execution.
+
+  ~go run -race .~ can be used to find race conditions in your code.
+
+  *Channels*
   - A means of allowing communication to and from a GoRoutine
   - Channels can be buffered, or unbuffered
   - Once you're done with a channel, you must close it

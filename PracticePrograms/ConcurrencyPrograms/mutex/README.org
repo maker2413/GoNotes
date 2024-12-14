@@ -1,3 +1,0 @@
-#+TITLE: Mutex locks
-
-~go run -race .~ can be used to find race conditions in your code.
