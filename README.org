@@ -56,3 +56,8 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
 * Practice programs
   This is just some random practice programs I have done to test myself. To view
   these please go [[./PracticePrograms/README.org][here]].
+
+* Other courses
+  I also have worked through a couple of Udemy courses on Go and I have included
+  my notes on those:
+  - 1. :: [[./WorkingWithConcurrency/README.org][Working with Concurrency in Go]]
