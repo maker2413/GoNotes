@@ -40,7 +40,7 @@ func readUserInput(doneChan chan bool) {
 		}
 
 		fmt.Println(res)
-		fmt.Print("-> ")
+		prompt()
 	}
 }
 

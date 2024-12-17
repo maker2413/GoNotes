@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/gob"
 	"final-project/data"
 	"fmt"
 	"log"
@@ -49,6 +50,8 @@ func main() {
 	}
 
 	// Set up mail
+	app.Mailer = app.createMail()
+	go app.listenForMail()
 
 	// Listen for signals
 	go app.listenForShutdown()
@@ -80,6 +83,8 @@ func initDB() *sql.DB {
 	return conn
 }
 
+// connectToDB tries to connect to postgres, and backs off until a connection
+// is made, or we have not connected after 10 tries
 func connectToDB() *sql.DB {
 	counts := 0
 
@@ -106,6 +111,8 @@ func connectToDB() *sql.DB {
 	}
 }
 
+// openDB opens a connection to Postgres, using the DSN read from the
+// environment variable DSN
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
 
@@ -121,7 +128,10 @@ func openDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
+// initSession sets up a session, using Redis for session store
 func initSession() *scs.SessionManager {
+	gob.Register(data.User{})
+
 	// set up session
 	session := scs.New()
 	session.Store = redisstore.New(initRedis())
@@ -133,6 +143,8 @@ func initSession() *scs.SessionManager {
 	return session
 }
 
+// initRedis returns a pool of connections to Redis using the environment
+// variable REDIS
 func initRedis() *redis.Pool {
 	redisPool := &redis.Pool{
 		MaxIdle: 10,
@@ -159,5 +171,32 @@ func (app *Config) shutdown() {
 	// Block until WaitGroup is empty
 	app.Wait.Wait()
 
+	app.Mailer.DoneChan <- true
+
 	app.InfoLog.Println("closing channels and shutting down application...")
+	close(app.Mailer.MailerChan)
+	close(app.Mailer.ErrorChan)
+	close(app.Mailer.DoneChan)
+}
+
+func (app *Config) createMail() Mail {
+	// Create channels
+	errorChan := make(chan error)
+	mailerChan := make(chan Message, 100)
+	mailerDoneChan := make(chan bool)
+
+	m := Mail{
+		Domain:      "localhost",
+		Host:        "localhost",
+		Port:        1025,
+		Encryption:  "none",
+		FromName:    "Info",
+		FromAddress: "info@mycompany.com",
+		Wait:        app.Wait,
+		ErrorChan:   errorChan,
+		MailerChan:  mailerChan,
+		DoneChan:    mailerDoneChan,
+	}
+
+	return m
 }
