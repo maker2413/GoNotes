@@ -1,0 +1,10 @@
+#+TITLE: Intro to Testing in Go
+
+This directory just contains Notes and sample programs I made while working
+through the
+"[[https://www.udemy.com/course/introduction-to-testing-in-go-golang/][Introduction to Testing in Go]]" course on Udemy.
+
+* Programs:
+  I would work through the programs in this directory in the following order to
+  follow along with the structure of the course:
+  - 1. :: [[./primeNumbers/][Simple Testing]]

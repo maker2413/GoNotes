@@ -5,3 +5,4 @@ learned.
 
 * Programs
   - 1. :: [[./dataStructures/README.org][Data Structures]]
+  - 2. :: [[./pong/][Pong]]
