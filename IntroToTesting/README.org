@@ -8,6 +8,7 @@ through the
   I would work through the programs in this directory in the following order to
   follow along with the structure of the course:
   - 1. :: [[./primeNumbers/][Simple Testing]]
+  - 2. :: [[./webapp/][Testing Web Applications]]
 
 * Notes:
   Tests can be run with ~go test .~. We can get verbose test output with:
