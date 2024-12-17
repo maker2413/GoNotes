@@ -8,3 +8,24 @@ through the
   I would work through the programs in this directory in the following order to
   follow along with the structure of the course:
   - 1. :: [[./primeNumbers/][Simple Testing]]
+
+* Notes:
+  Tests can be run with ~go test .~. We can get verbose test output with:
+  ~go test -v .~. We can also see the coverage of our tests with:
+  ~go test -cover .~
+
+  If we want to see which percentage in particular is covered we can run:
+  ~go test -coverprofile=<filename>~ to our test coverage results to a file. To
+  use this file we can run: ~go tool cover -html=<filename>~ this will open our
+  default web browser with a page showing which lines specifically of our code
+  base are being covered by our tests! The green lines signify what our test
+  cases are covering and the red lines represent lines of code that may not be
+  covered by our tests.
+
+  We can run individual tests with the following:
+  ~go test -run <test function>~, where =<test function>= is the name of the
+  specific test we want to run.
+
+  We can also specify groups of tests we want to run with:
+  ~go test -run Test_<label> .~, where =<label>= is label set in the name of
+  each test in a suite. See [[./primeNumbers/main_test.go][here]] for an example.
