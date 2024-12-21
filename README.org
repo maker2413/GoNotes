@@ -91,7 +91,7 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
     code from the ~/internal~ and ~/pkg~ directories and nothing else.
 
     See the [[https://github.com/golang-standards/project-layout/blob/master/cmd/README.md][/cmd]] directory for examples.
-  - ~/internal~
+  - ~/internal~:
     Private application and library code. This is the code you don't want others
     importing in their applications or libraries. Note that this layout pattern
     is enforced by the Go compiler itself. See the Go 1.4 [[https://go.dev/doc/go1.4#internalpackages][release notes]] for more
@@ -111,7 +111,7 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
     inside an internal directory, then other packages can’t import it unless
     they share a common ancestor. And it’s the only directory named in Go’s
     documentation and has special compiler treatment.
-  - ~/pkg~
+  - ~/pkg~:
     Library code that's ok to use by external applications (e.g.,
     ~/pkg/mypubliclib~). Other projects will import these libraries expecting
     them to work, so think twice before you put something here :-) Note that the
@@ -142,7 +142,7 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
     The ~pkg~ directory origins: The old Go source code used to use pkg for its
     packages and then various Go projects in the community started copying the
     pattern (see [[https://twitter.com/bradfitz/status/1039512487538970624][this]] Brad Fitzpatrick's tweet for more context).
-  - ~/vendor~
+  - ~/vendor~:
     Application dependencies (managed manually or by your favorite dependency
     management tool like the new built-in [[https://go.dev/wiki/Modules][Go Modules]] feature). The
     ~go mod vendor~ command will create the ~/vendor~ directory for you. Note
