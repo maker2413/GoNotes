@@ -34,3 +34,14 @@ through the "[[https://www.udemy.com/course/introduction-to-testing-in-go-golang
 
   If there is a directory called [[https://dave.cheney.net/2016/05/10/test-fixtures-in-go][testdata]] it will be ignored by your code, but
   can be used for testing.
+
+** The Repository Pattern
+   You need to be able to test your application without any external
+   dependencies like DBs, external APIs, etc. The repository pattern is:
+   - One of the most common patterns out there
+   - Allows us to swap database back ends easily
+   - We'll create two repositories: one for Postgres, and one for testing
+   - The Test repository does not use a database at all
+   - Allows us to write Unit tests without a running database
+
+   [[https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30]]
