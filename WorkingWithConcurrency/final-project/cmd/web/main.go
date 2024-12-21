@@ -205,8 +205,8 @@ func (app *Config) createMail() Mail {
 	mailerDoneChan := make(chan bool)
 
 	m := Mail{
-		Domain:      "localhost",
-		Host:        "localhost",
+		Domain:      "127.0.0.1",
+		Host:        "127.0.0.1",
 		Port:        1025,
 		Encryption:  "none",
 		FromName:    "Info",
