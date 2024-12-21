@@ -45,3 +45,20 @@ through the "[[https://www.udemy.com/course/introduction-to-testing-in-go-golang
    - Allows us to write Unit tests without a running database
 
    [[https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30]]
+
+** go build tags
+   In go you can set a comment at the top of any test file like:
+   #+begin_src go
+     //go:build integration
+   #+end_src
+
+   This is called [[https://go.googlesource.com/proposal/+/master/design/draft-gobuild.md][build tags]] and it is a feature that was added in Go 1.17. What
+   this will do is it will cause the tests within that test file to not be run
+   unless specified like:
+   #+begin_src bash
+     go test -tags=integration .
+   #+end_src
+
+   Using build tags like this can be helpful when your integration tests take
+   much longer than your unit tests and you don't want them to run every time
+   you execute your tests.
