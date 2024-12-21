@@ -29,3 +29,8 @@ through the "[[https://www.udemy.com/course/introduction-to-testing-in-go-golang
   We can also specify groups of tests we want to run with:
   ~go test -run Test_<label> .~, where =<label>= is label set in the name of
   each test in a suite. See [[./primeNumbers/main_test.go][here]] for an example.
+
+  [[https://medium.com/goingogo/why-use-testmain-for-testing-in-go-dafb52b406bc][TestMain]]
+
+  If there is a directory called [[https://dave.cheney.net/2016/05/10/test-fixtures-in-go][testdata]] it will be ignored by your code, but
+  can be used for testing.
