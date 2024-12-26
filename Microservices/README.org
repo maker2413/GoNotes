@@ -1,12 +1,13 @@
 #+TITLE: Microservices
 
 This directory just contains Notes and sample programs I made while working
-through the "[[https://www.udemy.com/course/working-with-microservices-in-go/?couponCode=KEEPLEARNING][Working with Microservices in Go]]" course on Udemy.
+through the "[[https://www.udemy.com/course/working-with-microservices-in-go][Working with Microservices in Go]]" course on Udemy.
 
 * Programs:
   I would work through the programs in this directory in the following order to
   follow along with the structure of the course:
   - 1. :: [[./front-end/][Front End]]
+  - 2. :: [[./broker-service][Broker Service]]
 
 * Notes:
   Microservices are:
