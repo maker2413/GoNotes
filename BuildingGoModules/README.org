@@ -1,0 +1,24 @@
+#+TITLE: Building a module in Go
+
+This directory just contains Notes and sample programs I made while working
+through the "[[https://www.udemy.com/course/building-a-module-in-go-golang/][Building a module in Go]]" course on Udemy.
+
+* Programs:
+  This course is going to build out a go module similar to:
+  https://github.com/tsawler/toolbox. This directory will contain code for the
+  module itself and an application that will use the module:
+  - 1. :: [[./tookit/][Module]]
+  - 2. :: [[./app/][Application]]
+
+* Notes:
+  In Go 1.18 the Go team added a feature called workspaces. This features allows
+  you to generate a file called ~go.work~, which will allow you to work with
+  multiple modules simultaneously. You can see a ~go.work~ file in this
+  directory. This was generated with the following command:
+  #+begin_src shell
+    go work init toolkit app
+  #+end_src
+
+  More info can be found on workspaces here:
+  - https://go.dev/blog/get-familiar-with-workspaces
+  - https://go.dev/doc/tutorial/workspaces
