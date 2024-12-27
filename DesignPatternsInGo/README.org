@@ -4,9 +4,14 @@ This directory just contains Notes and sample programs I made while working
 through the "[[https://www.udemy.com/course/working-with-design-patterns-in-go-golang/][Design Patterns in Go]]" course on Udemy.
 
 * Programs:
-  I would work through the programs in this directory in the following order to
-  follow along with the structure of the course:
-  - 1. :: [[./breeders/][Simple Web Application]]
+  The course begins by building out a simple web application and then goes
+  through various design patterns before implementing them in the web
+  application. I would work through the programs in this directory in the
+  following order to follow along with the structure of the course:
+  - 1. :: [[./webApp/][Simple Web Application]]
+  - 2. :: [[./factory/README.org][Factory Pattern]]
+  - 3. :: [[./abstractFactory/README.org][Abstract Factory Pattern]]
+  - final :: [[./breeders/][Breeders]]
 
 * Notes:
   Design Patterns pertinent to Go:
