@@ -1,0 +1,7 @@
+#+TITLE: The Factory Pattern
+
+The [[https://en.wikipedia.org/wiki/Factory_method_pattern][Factory design pattern]] is a pattern that uses factory methods to deal with
+the problem of creating objects. The factory pattern is commonly used in object
+oriented programming language and isn't used as commonly in Go, but you will
+encounter it. The code in this directory illustrates that we have a type called
+~Product~ that can be initialized with the factory method ~New()~.

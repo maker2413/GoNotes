@@ -1,0 +1,10 @@
+#+TITLE: The Abstract Factory Pattern
+
+The [[https://en.wikipedia.org/wiki/Abstract_factory_pattern][Abstract Factory Pattern]] is a slightly more complex version of the factory
+pattern that creates families of related objects. For instance if we have a
+factory that creates animals called ~Animals~ the factory should be able to
+build out ~Dogs~ and ~Cats~ since they have similar traits with different
+values. That is what the code included in this directory show cases.
+
+A deeper example of Abstract Factories can be found here:
+https://refactoring.guru/design-patterns/abstract-factory
