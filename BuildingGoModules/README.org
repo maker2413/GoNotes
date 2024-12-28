@@ -6,7 +6,9 @@ through the "[[https://www.udemy.com/course/building-a-module-in-go-golang/][Bui
 * Programs:
   This course is going to build out a go module similar to:
   https://github.com/tsawler/toolbox. This directory will contain code for the
-  module itself and an application that will use the module:
+  module itself and multiple applications that will use the module. I suggest
+  looking through the module first and then looking the applications in the
+  order listed:
   - 1. :: [[./tookit/][Module]]
   - 2. :: [[./app/][Application]]
 
@@ -17,6 +19,11 @@ through the "[[https://www.udemy.com/course/building-a-module-in-go-golang/][Bui
   directory. This was generated with the following command:
   #+begin_src shell
     go work init toolkit app
+  #+end_src
+
+  New applications can be added to the ~go.work~ file by using:
+  #+begin_src shell
+    go work use <app name>
   #+end_src
 
   More info can be found on workspaces here:
