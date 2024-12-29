@@ -13,6 +13,7 @@ through the "[[https://www.udemy.com/course/building-a-module-in-go-golang/][Bui
   - 2. :: [[./app/][Application]]
   - 3. :: [[./app-upload/][Application Upload]]
   - 4. :: [[./app-dir/][Application Directory]]
+  - 5. :: [[./app-slug/][Application Slug]]
 
 * Notes:
   In Go 1.18 the Go team added a feature called workspaces. This features allows

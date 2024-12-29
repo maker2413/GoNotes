@@ -21,19 +21,19 @@ func TestTools_RandomString(t *testing.T) {
 	}
 }
 
-var uploadTests = []struct {
-	name          string
-	allowedTypes  []string
-	renameFile    bool
-	errorExpected bool
-}{
-	{name: "Allowed no rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: false, errorExpected: false},
-	{name: "Allowed rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: true, errorExpected: false},
-	{name: "Not Allowed", allowedTypes: []string{"image/jpeg"}, renameFile: false, errorExpected: true},
-}
-
 func TestTools_UploadFiles(t *testing.T) {
-	for _, e := range uploadTests {
+	var tests = []struct {
+		name          string
+		allowedTypes  []string
+		renameFile    bool
+		errorExpected bool
+	}{
+		{name: "Allowed no rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: false, errorExpected: false},
+		{name: "Allowed rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: true, errorExpected: false},
+		{name: "Not Allowed", allowedTypes: []string{"image/jpeg"}, renameFile: false, errorExpected: true},
+	}
+
+	for _, e := range tests {
 		// Set up a pipe to avoid buffering
 		pr, pw := io.Pipe()
 		writer := multipart.NewWriter(pw)
@@ -160,4 +160,30 @@ func TestTools_CreateDirIfNotExist(t *testing.T) {
 	}
 
 	_ = os.Remove("./testdata/myDir")
+}
+
+func TestTools_Slugify(t *testing.T) {
+	var tests = []struct {
+		name          string
+		s             string
+		expected      string
+		errorExpected bool
+	}{
+		{name: "valid string", s: "now is the time", expected: "now-is-the-time", errorExpected: false},
+		{name: "empty string", s: "", expected: "", errorExpected: true},
+		{name: "complex string", s: "Now is the time for all GOOD men! + fish & such &^123", expected: "now-is-the-time-for-all-good-men-fish-such-123", errorExpected: false},
+		{name: "japanese string and roman characters", s: "こんにちは世界 hello world", expected: "hello-world", errorExpected: false},
+	}
+	var testTool Tools
+
+	for _, e := range tests {
+		slug, err := testTool.Slugify(e.s)
+		if err != nil && !e.errorExpected {
+			t.Errorf("%s: error received when none expected: %s", e.name, err.Error())
+		}
+
+		if !e.errorExpected && slug != e.expected {
+			t.Errorf("%s: wrong slug returned; expected %s, but got %s", e.name, e.expected, slug)
+		}
+	}
 }
