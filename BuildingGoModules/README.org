@@ -11,6 +11,8 @@ through the "[[https://www.udemy.com/course/building-a-module-in-go-golang/][Bui
   order listed:
   - 1. :: [[./tookit/][Module]]
   - 2. :: [[./app/][Application]]
+  - 3. :: [[./app-upload/][Application Upload]]
+  - 4. :: [[./app-dir/][Application Directory]]
 
 * Notes:
   In Go 1.18 the Go team added a feature called workspaces. This features allows
