@@ -17,6 +17,40 @@ import (
 	"testing"
 )
 
+type RoundTripFunc func(req *http.Request) *http.Response
+
+func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req), nil
+}
+
+func NewTestClient(fn RoundTripFunc) *http.Client {
+	return &http.Client{
+		Transport: fn,
+	}
+}
+
+func TestTools_PushJSON(t *testing.T) {
+	client := NewTestClient(func(req *http.Request) *http.Response {
+		// Test Request Parameters
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewBufferString("ok")),
+			Header:     make(http.Header),
+		}
+	})
+
+	var testTools Tools
+	var foo struct {
+		Bar string `json:"bar"`
+	}
+	foo.Bar = "bar"
+
+	_, _, err := testTools.PushJSONToRemote("http://example.com/some/path", foo, client)
+	if err != nil {
+		t.Error("Failed to call remote url:", err)
+	}
+}
+
 func TestTools_RandomString(t *testing.T) {
 	var testTools Tools
 
@@ -199,7 +233,7 @@ func TestTools_DownloadStaticFile(t *testing.T) {
 
 	var testTool Tools
 
-	testTool.DownloadStaticFile(rr, req, "./testdata", "pic.jpg", "puppy.jpg")
+	testTool.DownloadStaticFile(rr, req, "./testdata/pic.jpg", "puppy.jpg")
 
 	res := rr.Result()
 	defer res.Body.Close()

@@ -1,9 +1,11 @@
 go 1.23.4
 
 use (
+	./api-test
 	./app
 	./app-dir
 	./app-download
+	./app-json
 	./app-slug
 	./app-upload
 	./toolkit
