@@ -17,3 +17,16 @@ https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
 The repository pattern has two main purposes; first it is to abstract away the
 data layer and the second is to have a way of centralizing the handling of the
 domain objects.
+
+I implemented the repository pattern to the breeders program in the following
+commit: [[https://github.com/maker2413/GoNotes/tree/f57b8479d801adfe4808b95b65575455f62feec6/DesignPatternsInGo/breeders][commit]].
+
+If you look in [[https://github.com/maker2413/GoNotes/tree/f57b8479d801adfe4808b95b65575455f62feec6/DesignPatternsInGo/breeders/models][this]] directory you can see in ~repository.go~ that an interface
+was created for wrap around ~sql.DB~. A new factory was also created to
+provision repository types. We can also see [[https://github.com/maker2413/GoNotes/blob/f57b8479d801adfe4808b95b65575455f62feec6/DesignPatternsInGo/breeders/models/dog_testDB.go][here]] that we created a function that
+emulates our ~AllDogBreeds~ function that interacts with our MySQL database.
+
+This is the core concept of the repository pattern. With this we can run unit
+tests without any dependency on our database and if we ever wanted to extend
+this application to support another database engine like PostgreSQL for instance
+we could just add another repository type.

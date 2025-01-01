@@ -12,6 +12,7 @@ through the "[[https://www.udemy.com/course/working-with-design-patterns-in-go-g
   - 2. :: [[./factory/README.org][Factory Pattern]]
   - 3. :: [[./abstractFactory/README.org][Abstract Factory Pattern]]
   - 4. :: [[./repository/README.org][Repository Pattern]]
+  - 5. :: [[./singleton/README.org][Singleton Pattern]]
   - final :: [[./breeders/][Breeders]]
 
 * Notes:
