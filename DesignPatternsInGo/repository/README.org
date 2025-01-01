@@ -1,0 +1,19 @@
+#+TITLE: The Repository Pattern
+
+The repository pattern is really an example of the adapter pattern, but a lot of
+people and organizations refer to this as the repository pattern. This is
+probably one of the more popular design patterns used in any programming
+language, including Go.
+
+The repository pattern:
+- Allows us to change databases with ease
+- Makes writing unit tests much simpler
+- Is an intermediary layer between an application's business logic and data
+  storage
+
+Here is a medium article describe the basic design of a repository pattern:
+https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30
+
+The repository pattern has two main purposes; first it is to abstract away the
+data layer and the second is to have a way of centralizing the handling of the
+domain objects.
