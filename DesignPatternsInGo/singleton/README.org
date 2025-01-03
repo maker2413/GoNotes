@@ -1,1 +1,8 @@
 #+TITLE: The Singleton Pattern
+
+The singleton pattern doesn't get a lot of use, but when you need it, it is
+super helpful. As the name might imply the singleton pattern creates a single
+object. There is more to it than that, but in simple terms it:
+- Allows us to restrict the instantiation of something to a singular instance
+- Is useful when exactly one object is needed to coordinate actions across a
+  system.

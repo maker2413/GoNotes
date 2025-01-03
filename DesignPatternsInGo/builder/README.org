@@ -1,0 +1,17 @@
+#+TITLE: The Builder Pattern
+
+The builder pattern is a single design pattern that is used in two different
+ways. The first one is a creational pattern known as the builder pattern. The
+other variation of that is called the fluent interface.
+
+Both versions of this pattern allow us to chain methods. Here is an example:
+#+begin_src go
+  p, err := pets.NewPetBuilder().
+          SetSpecies("dog").
+          SetWeight(15).
+          SetDescription("A very good boy").
+          SetColor("Black and White").
+          SetAge(3).
+          SetAgeEstimated(true).
+          Build()
+#+end_src
