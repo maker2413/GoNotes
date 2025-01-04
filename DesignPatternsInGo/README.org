@@ -15,6 +15,7 @@ through the "[[https://www.udemy.com/course/working-with-design-patterns-in-go-g
   - 5. :: [[./singleton/README.org][Singleton Pattern]]
   - 6. :: [[./builder/README.org][Builder Pattern]]
   - 7. :: [[./adapter/README.org][Adapter Pattern]]
+  - 8. :: [[./decorator/README.org][Decorator Pattern]]
   - final :: [[./breeders/][Breeders]]
 
 * Notes:
