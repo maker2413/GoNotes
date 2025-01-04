@@ -1,1 +1,9 @@
 #+TITLE: The Decorator Pattern
+
+The decorator pattern is dead simple in Go. If it look at examples in other
+languages it may look quite complex, but in Go it is really, really easy.
+
+The goal of the decorator pattern is to take an object and decorate it with
+additional information. All we have to do to accomplish this in Go is to take
+the thing we want to decorate with additional information and wrap it in another
+struct that has that additional information.
