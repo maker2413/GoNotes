@@ -1,0 +1,3 @@
+[submodule "DesignPatternsInGo/go-breeders-remote"]
+	path = DesignPatternsInGo/go-breeders-remote
+	url = https://github.com/tsawler/go-breeders-remote.git
