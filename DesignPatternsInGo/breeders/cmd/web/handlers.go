@@ -64,6 +64,7 @@ func (app *application) GetAllDogBreedsJSON(w http.ResponseWriter, r *http.Reque
 	_ = t.WriteJSON(w, http.StatusOK, dogBreeds)
 }
 
+// CreateDogWithBuilder creates a dog using a (fluent) builder pattern
 func (app *application) CreateDogWithBuilder(w http.ResponseWriter, r *http.Request) {
 	var t toolbox.Tools
 
@@ -85,6 +86,7 @@ func (app *application) CreateDogWithBuilder(w http.ResponseWriter, r *http.Requ
 	_ = t.WriteJSON(w, http.StatusOK, p)
 }
 
+// CreateDogWithBuilder creates a cat using a (fluent) builder pattern
 func (app *application) CreateCatWithBuilder(w http.ResponseWriter, r *http.Request) {
 	var t toolbox.Tools
 
@@ -105,4 +107,20 @@ func (app *application) CreateCatWithBuilder(w http.ResponseWriter, r *http.Requ
 	}
 
 	_ = t.WriteJSON(w, http.StatusOK, p)
+}
+
+// GetAllCatBreeds gets all cat breeds from some source (using an adapter) and
+// returns it as JSON
+func (app *application) GetAllCatBreeds(w http.ResponseWriter, r *http.Request) {
+	var t toolbox.Tools
+
+	// Since we are using the adapter pattern, this handler does not care where
+	// it gets the data from; it will simply use whatever is stored in
+	// app.catService
+	catBreeds, err := app.catService.GetAllBreeds()
+	if err != nil {
+		_ = t.ErrorJSON(w, err, http.StatusBadRequest)
+	}
+
+	_ = t.WriteJSON(w, http.StatusOK, catBreeds)
 }

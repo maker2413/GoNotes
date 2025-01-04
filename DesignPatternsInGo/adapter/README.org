@@ -14,3 +14,5 @@ To give a brief idea of how Go makes this incredibly easy. Let's assume that:
   expects.
 - Using this allows us to make existing sections of code work with other
   sections, without modifying those sections.
+
+This directory also contains an example the adapter pattern: [[./][here]]
