@@ -7,3 +7,6 @@ The goal of the decorator pattern is to take an object and decorate it with
 additional information. All we have to do to accomplish this in Go is to take
 the thing we want to decorate with additional information and wrap it in another
 struct that has that additional information.
+
+I implemented the decorator pattern to the breeders program in the following
+commit: [[https://github.com/maker2413/GoNotes/commit/38c36cbf5a927e566538ae63e31744ed59bc7b05][commit]]

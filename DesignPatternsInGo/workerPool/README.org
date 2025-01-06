@@ -1,0 +1,14 @@
+#+TITLE: The Worker Pool Pattern
+
+The worker pool is a really useful pattern that is also quite easy to implement
+in Go. With the worker pool pattern we have units of work that are distributed
+among a pool of workers, which run concurrently. This is very useful for long
+running or processor intensive tasks.
+
+With a Go implementation we can also take advantage of channels to handle
+communication between workers. We will also be able to utilize Go routines for
+our workers.
+
+This directory also contains two examples of the worker pool pattern:
+- 1. :: [[./simple/main.go][Simple Example]]
+- 2. :: [[./wp/README.org][Advanced Example]]

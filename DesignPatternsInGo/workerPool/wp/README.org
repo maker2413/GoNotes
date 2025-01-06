@@ -1,0 +1,5 @@
+#+TITLE: Video Streaming Platform
+
+This is a more involved example of the worker pool design pattern. In this
+directory we are going to build out a couple of microservices for a fictional
+video streaming platform.
