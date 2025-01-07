@@ -3,6 +3,7 @@ package main
 import (
 	"breeders/adapters"
 	"breeders/configuration"
+	"breeders/streamer"
 	"flag"
 	"fmt"
 	"html/template"
@@ -17,6 +18,7 @@ type application struct {
 	templateMap map[string]*template.Template
 	config      appConfig
 	App         *configuration.Application
+	videoQueue  chan streamer.VideoProcessingJob
 }
 
 type appConfig struct {
@@ -25,8 +27,14 @@ type appConfig struct {
 }
 
 func main() {
+	const numWorkers = 4
+
+	videoQueue := make(chan streamer.VideoProcessingJob, numWorkers)
+	defer close(videoQueue)
+
 	app := application{
 		templateMap: make(map[string]*template.Template),
+		videoQueue:  videoQueue,
 	}
 
 	flag.BoolVar(&app.config.useCache, "cache", false, "Use template cache")
@@ -47,6 +55,9 @@ func main() {
 
 	// app.App = configuration.New(db, jsonAdapter)
 	app.App = configuration.New(db, xmlAdapter)
+
+	wp := streamer.New(videoQueue, numWorkers)
+	wp.Run()
 
 	srv := &http.Server{
 		Addr:              port,
