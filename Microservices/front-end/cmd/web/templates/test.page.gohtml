@@ -8,6 +8,7 @@
       <hr>
       <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Broker</a>
       <a id="authBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Auth</a>
+      <a id="logBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Log</a>
 
       <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
         <span class="text-muted">Output shows here...</span>
@@ -34,23 +35,37 @@
 {{define "js"}}
 <script>
 let brokerBtn = document.getElementById("brokerBtn");
-let authBtn = document.getElementById("authBrokerBtn");
+let authBrokerBtn = document.getElementById("authBrokerBtn");
+let logBtn = document.getElementById("logBtn");
 let output = document.getElementById("output");
 let sent = document.getElementById("payload");
 let received = document.getElementById("received");
 
-brokerBtn.addEventListener("click", function() {
-  const body = {
-    method: 'POST',
+logBtn.addEventListener("click", function() {
+  const payload = {
+    action: "log",
+    log: {
+      name: "event",
+      data: "Some kind of data",
+    }
   }
 
-  fetch("http:\/\/127.0.0.1:8080", body)
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const body = {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: headers,
+  }
+
+  fetch("http:\/\/127.0.0.1:8080/handle", body)
     .then((response) => response.json())
     .then((data) => {
-      sent.innerHTML = "empty post request";
+      sent.innerHTML = JSON.stringify(payload, undefined, 4);
       received.innerHTML = JSON.stringify(data, undefined, 4);
       if (data.error) {
-        console.log(data.message);
+        output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
       } else {
         output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
       }
@@ -84,7 +99,28 @@ authBrokerBtn.addEventListener("click", function() {
       sent.innerHTML = JSON.stringify(payload, undefined, 4);
       received.innerHTML = JSON.stringify(data, undefined, 4);
       if (data.error) {
-        output.innerHTML += `<br><strong>Error:</strong> ${data.message}`
+        output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+      } else {
+        output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+      }
+    })
+    .catch((error) => {
+      output.innerHTML += "<br><br>Error: " + error;
+    })
+})
+
+brokerBtn.addEventListener("click", function() {
+  const body = {
+    method: 'POST',
+  }
+
+  fetch("http:\/\/127.0.0.1:8080", body)
+    .then((response) => response.json())
+    .then((data) => {
+      sent.innerHTML = "empty post request";
+      received.innerHTML = JSON.stringify(data, undefined, 4);
+      if (data.error) {
+        console.log(data.message);
       } else {
         output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
       }
