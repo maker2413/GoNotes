@@ -3,3 +3,8 @@
 This is a more involved example of the worker pool design pattern. In this
 directory we are going to build out a couple of microservices for a fictional
 video streaming platform.
+
+There are two directories included in this project:
+- 1. [[./streamer/]] This directory contains all of the video encoding logic.
+- 2. [[./app/]] This directory contains an application that uses the streamer
+  package.
