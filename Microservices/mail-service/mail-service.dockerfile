@@ -7,15 +7,17 @@
 
 # WORKDIR /app
 
-# RUN CGO_ENABLED=0 go build -o loggerServiceApp ./cmd/api
+# RUN CGO_ENABLED=0 go build -o mailerApp ./cmd/api
 
-# RUN chmod +x /app/loggerServiceApp
+# RUN chmod +x /app/mailerApp
 
 # Build a tiny docker image
 FROM alpine:latest
 
 RUN mkdir /app
 
-COPY loggerServiceApp /app
+COPY templates /templates
 
-CMD [ "/app/loggerServiceApp" ]
+COPY mailerApp /app
+
+CMD [ "/app/mailerApp" ]
