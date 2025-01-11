@@ -1,2 +1,14 @@
 For Caddy to work in the docker swarm setup you will need to add backend to
 ~/etc/hosts~.
+
+* Kubernetes
+  To get the application up and running in kubernetes run the following:
+  #+begin_src shell
+    minikube start --node=2
+    minikube addons enable ingress
+
+    docker-compose -f postgres.yml up -d
+
+    kubectl apply -f k8s
+    kubectl apply -f ingress.yaml
+  #+end_src
