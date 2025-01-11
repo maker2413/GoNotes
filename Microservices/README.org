@@ -7,7 +7,13 @@ through the "[[https://www.udemy.com/course/working-with-microservices-in-go][Wo
   I would work through the programs in this directory in the following order to
   follow along with the structure of the course:
   - 1. :: [[./front-end/][Front End]]
-  - 2. :: [[./broker-service][Broker Service]]
+  - 2. :: [[./broker-service/][Broker Service]]
+  - 3. :: [[./authentication-service/][Authentication Service]]
+  - 4. :: [[./logger-service/][Logger Service]]
+  - 5. :: [[./mail-service/][Mail Service]]
+  - 6. :: [[./listener-service/][Listener Service]]
+
+* Docker Swarm
 
 * Notes:
   Microservices are:
