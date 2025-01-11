@@ -55,10 +55,22 @@ build_mail:
 	cd ../mail-service && env GOOS=linux CGO_ENABLED=0 go build -o ${MAIL_BINARY} ./cmd/api
 	@echo "Done!"
 
-## build_front: builds the frone end binary
+## build_front: builds the front end binary
 build_front:
 	@echo "Building front end binary..."
-	cd ../front-end && env CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} ./cmd/web
+	cd ../front-end && env GOOS=linux CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} ./cmd/web
+	@echo "Done!"
+
+## build_caddy: builds the caddy image
+build_caddy:
+	@echo "Building Caddy image..."
+	docker build -f caddy.dockerfile -t maker2413/caddy:latest .
+	@echo "Done!"
+
+## push_caddy: pushes the caddy image
+push_caddy:
+	@echo "Building Caddy image..."
+	docker push maker2413/caddy:latest
 	@echo "Done!"
 
 ## start: starts the front end

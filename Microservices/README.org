@@ -14,6 +14,27 @@ through the "[[https://www.udemy.com/course/working-with-microservices-in-go][Wo
   - 6. :: [[./listener-service/][Listener Service]]
 
 * Docker Swarm
+  Here is how to bring it up. First go to the project directory and then run:
+  #+begin_src shell
+    docker swarm init --advertise-addr 192.168.0.95
+    docker stack deploy -c swarm.yml myapp
+  #+end_src
+
+  You can see running services with:
+  #+begin_src shell
+    docker service ls
+  #+end_src
+
+  To bring it all down you can run:
+  #+begin_src shell
+    docker stack rm myapp
+  #+end_src
+
+  To entirely leave the swarm you can run:
+  #+begin_src shell
+    # if you are a manager node you will need to also append --force
+    docker swarm leave
+  #+end_src
 
 * Notes:
   Microservices are:

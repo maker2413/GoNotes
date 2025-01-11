@@ -1,0 +1,2 @@
+For Caddy to work in the docker swarm setup you will need to add backend to
+~/etc/hosts~.
