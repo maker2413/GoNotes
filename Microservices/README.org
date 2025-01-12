@@ -17,7 +17,7 @@ through the "[[https://www.udemy.com/course/working-with-microservices-in-go][Wo
   Here is how to bring it up. First go to the project directory and then run:
   #+begin_src shell
     docker swarm init --advertise-addr 192.168.0.95
-    docker stack deploy -c swarm.yml myapp
+    docker stack deploy -c project/swarm.yml myapp
   #+end_src
 
   You can see running services with:
@@ -34,6 +34,16 @@ through the "[[https://www.udemy.com/course/working-with-microservices-in-go][Wo
   #+begin_src shell
     # if you are a manager node you will need to also append --force
     docker swarm leave
+  #+end_src
+
+* Kubernetes
+  To get the application running in kubernetes:
+  #+begin_src shell
+    minikube start --node=2
+
+    minikube addons enable ingress
+
+    kubectl apply -f project/k8s
   #+end_src
 
 * Notes:
