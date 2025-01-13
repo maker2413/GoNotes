@@ -60,9 +60,9 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
   - 2. :: [[./DesignPatternsInGo/README.org][Design Patterns in Go]]
   - 3. :: [[./IntroToTesting/README.org][Introduction to Testing in Go]]
   - 4. :: [[./WorkingWithConcurrency/README.org][Working with Concurrency in Go]]
-  - 5. :: [[./Microservices/README.org][Working with Microservices in Go]]
+  - 5. :: [[./BuildingModernWebApplicationsWithGo/README.org][Building Modern Web Applications with Go]]
   - 6. :: [[./BuildingWebApplicationsWithGo/README.org][Building Web Applications with Go]]
-  - 7. :: [[./BuildingModernWebApplicationsWithGo/README.org][Building Modern Web Applications with Go]]
+  - 7. :: [[./Microservices/README.org][Working with Microservices in Go]]
 
 * Practice programs
   This is just some random practice programs I have done to test myself. To view
