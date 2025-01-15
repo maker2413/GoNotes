@@ -10,3 +10,13 @@ Connect with DB client of choice and create a new database called
 #+begin_src sql
   grant all on widgets.* to 'maker'@'%' identified by 'verysecret';
 #+end_src
+
+After that you can install soda:
+#+begin_src shell
+  go install github.com/gobuffalo/pop/v6/soda@latest
+#+end_src
+
+And finally you can apply the sql files to create our tables with:
+#+begin_src shell
+  soda migrate
+#+end_src
