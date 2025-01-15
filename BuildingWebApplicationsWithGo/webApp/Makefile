@@ -1,8 +1,8 @@
-STRIPE_SECRET=
-STRIPE_KEY=
+STRIPE_SECRET=sk_test_51QaHfrKnDGT3qqI4SPZxPlvnalv6EEDnuzA5Tjumnn5VGWYI2WaqZihMrD3uhdrA6OxZZLhnkPm6U5QJqo1aU0TN00uC0YTW59
+STRIPE_KEY=pk_test_51QaHfrKnDGT3qqI4KnkP8PNGyP1FH2qYfXY4aASFaBfmOn9vfmyt3mxsIXE4nrG4x1YYBSkHvCrdxdlgsfW7KKzC00oap1XUpi
 GOSTRIPE_PORT=4000
 API_PORT=4001
-DSN=root@tcp(localhost:3306)/widgets?parseTime=true&tls=false
+DSN=maker:verysecret@tcp(127.0.0.1:3306)/widgets?parseTime=true&tls=false
 
 ## build: builds all binaries
 build: clean build_front build_back
@@ -39,7 +39,7 @@ start_front: build_front
 ## start_back: starts the back end
 start_back: build_back
 	@echo "Starting the back end..."
-	@env STRIPE_KEY=${STRIPE_KEY} STRIPE_SECRET=${STRIPE_SECRET} ./dist/gostripe_api -port=${API_PORT}  -dsn="${DSN}" &
+	@env STRIPE_KEY=${STRIPE_KEY} STRIPE_SECRET=${STRIPE_SECRET} ./dist/gostripe_api -port=${API_PORT} -dsn="${DSN}" &
 	@echo "Back end running!"
 
 ## stop: stops the front and back end
@@ -57,3 +57,13 @@ stop_back:
 	@echo "Stopping the back end..."
 	@-pkill -SIGTERM -f "gostripe_api -port=${API_PORT}"
 	@echo "Stopped back end"
+
+startdb:
+	mkdir -p db-data/mariadb && \
+	docker run --rm --name mariadb -p 3306:3306 \
+	-e MARIADB_ROOT_PASSWORD=verysecret \
+	-v ./db-data/mariadb:/var/lib/mysql:Z \
+	-d mariadb:latest
+
+stopdb:
+	docker stop mariadb

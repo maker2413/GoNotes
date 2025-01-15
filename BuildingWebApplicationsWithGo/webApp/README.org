@@ -1,0 +1,12 @@
+#+TITLE: Web Application
+
+Start DB:
+#+begin_src shell
+  make startdb
+#+end_src
+
+Connect with DB client of choice and create a new database called
+~widgets~. After the database has been created run:
+#+begin_src sql
+  grant all on widgets.* to 'maker'@'%' identified by 'verysecret';
+#+end_src
