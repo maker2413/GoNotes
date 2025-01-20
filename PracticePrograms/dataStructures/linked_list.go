@@ -2,20 +2,25 @@ package main
 
 import "errors"
 
+// Node is a struct that will represent the individual nodes of our linked list.
 type Node struct {
 	content any
 	next    *Node
 }
 
+// LinkedList is a struct that we will use to implement a LinkedList of Nodes.
 type LinkedList struct {
 	head *Node
 	tail *Node
 }
 
+// IsEmpty is a method that will return a bool representing if the LinkedList
+// is empty.
 func (l LinkedList) IsEmpty() bool {
 	return l.head == nil
 }
 
+// Len is a method that will return the length of our LinkedList.
 func (l LinkedList) Len() int {
 	if !l.IsEmpty() {
 		currentNode := l.head
@@ -29,6 +34,8 @@ func (l LinkedList) Len() int {
 	return 0
 }
 
+// InsertFront is a method that allows us to add content to the head of our
+// LinkedList.
 func (l *LinkedList) InsertFront(n any) {
 	switch l.Len() {
 	case 0:
@@ -42,6 +49,8 @@ func (l *LinkedList) InsertFront(n any) {
 	}
 }
 
+// InsertBack is a method that allows us to add content to the tail of our
+// LinkedList.
 func (l *LinkedList) InsertBack(n any) {
 	switch l.Len() {
 	case 0:
@@ -55,6 +64,8 @@ func (l *LinkedList) InsertBack(n any) {
 	}
 }
 
+// RemoveFront is a method that allows us to remove content from the head of our
+// LinkedList.
 func (l *LinkedList) RemoveFront() (any, error) {
 	var frontNode = &Node{}
 	switch l.Len() {
@@ -72,6 +83,8 @@ func (l *LinkedList) RemoveFront() (any, error) {
 	return frontNode.content, nil
 }
 
+// RemoveBack is a method that allows us to remove content from the tail of our
+// LinkedList.
 func (l *LinkedList) RemoveBack() (any, error) {
 	var backNode = &Node{}
 	switch l.Len() {
