@@ -1,4 +1,17 @@
 #+TITLE: Data Structures
 
 This is just some programs that build out some simple data structures like
-stacks, queues, linked lists, and binary search trees.
+stacks, queues, linked lists, binary search trees, and more.
+
+* Complete Data Structures:
+  Here are the individual data structures found in this directory:
+  - [[./stacks.go][Stack]]
+  - [[./queue.go][Queue]]
+  - [[./linked_list.go][Linked List]]
+  - [[./bst.go][Binary Search Tree]]
+
+  To test any of these data structures you can simply run the included unit
+  tests with the following:
+  #+begin_src shell
+    go test -cover -v .
+  #+end_src

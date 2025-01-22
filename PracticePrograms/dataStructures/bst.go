@@ -22,6 +22,38 @@ func (b *BST) IsEmpty() bool {
 	return b.root == nil
 }
 
+// Height is a method that is a warpper around the node method height().
+func (b *BST) Height() int {
+	if b.IsEmpty() {
+		return 0
+	}
+
+	return b.root.height()
+}
+
+// height is a node method that returns the height or depth of the tree.
+func (n *BSTNode) height() int {
+	if n.left == nil && n.right == nil {
+		return 1
+	}
+
+	leftHeight := 0
+	rightHeight := 0
+	if n.left != nil {
+		leftHeight = n.left.height()
+	}
+	if n.right != nil {
+		rightHeight = n.right.height()
+	}
+
+	if leftHeight > rightHeight {
+		return leftHeight + 1
+	} else {
+		return rightHeight + 1
+	}
+}
+
+// InOrder is a method that is a wrapper around the node method inOrder().
 func (b *BST) InOrder() []int {
 	if b.IsEmpty() {
 		var tree []int
@@ -32,6 +64,8 @@ func (b *BST) InOrder() []int {
 	return b.root.inOrder()
 }
 
+// inOrder is a node method that is called recursively to traverse the tree
+// in order: https://www.geeksforgeeks.org/inorder-traversal-of-binary-tree/.
 func (n *BSTNode) inOrder() []int {
 	var tree []int
 
@@ -52,6 +86,7 @@ func (n *BSTNode) inOrder() []int {
 	return tree
 }
 
+// PreOrder is a method that is a wrapper around the node method preOrder().
 func (b *BST) PreOrder() []int {
 	if b.IsEmpty() {
 		var tree []int
@@ -62,6 +97,8 @@ func (b *BST) PreOrder() []int {
 	return b.root.preOrder()
 }
 
+// preOrder is a node method that is called recursively to traverse the tree
+// in pre order: https://www.geeksforgeeks.org/preorder-traversal-of-binary-tree/.
 func (n *BSTNode) preOrder() []int {
 	var tree []int
 
@@ -82,6 +119,7 @@ func (n *BSTNode) preOrder() []int {
 	return tree
 }
 
+// PostOrder is a method that is a wrapper around the node method postOrder().
 func (b *BST) PostOrder() []int {
 	if b.IsEmpty() {
 		var tree []int
@@ -92,6 +130,8 @@ func (b *BST) PostOrder() []int {
 	return b.root.postOrder()
 }
 
+// postOrder is a node method that is called recursively to traverse the tree
+// in post order: https://www.geeksforgeeks.org/postorder-traversal-of-binary-tree/.
 func (n *BSTNode) postOrder() []int {
 	var tree []int
 
@@ -112,6 +152,7 @@ func (n *BSTNode) postOrder() []int {
 	return tree
 }
 
+// Insert is a method that is a wrapper around the node method insert().
 func (b *BST) Insert(val int) error {
 	node := BSTNode{
 		val: val,
@@ -125,6 +166,9 @@ func (b *BST) Insert(val int) error {
 	return b.root.insert(node)
 }
 
+// insert is a node method that is called recursively to insert a new node into
+// the tree if it doesn't already exist. If the node already exists an error is
+// returned.
 func (n *BSTNode) insert(node BSTNode) error {
 	if node.val == n.val {
 		return errors.New("Node with value: %d, already exists")
@@ -147,6 +191,7 @@ func (n *BSTNode) insert(node BSTNode) error {
 	return n.right.insert(node)
 }
 
+// Min is a method that returns the minimum value in the tree.
 func (b *BST) Min() (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("Tree is currently empty, unable to get minimum value")
@@ -161,6 +206,7 @@ func (b *BST) Min() (int, error) {
 	return current.val, nil
 }
 
+// Max is a method that returns the maximum value in the tree.
 func (b *BST) Max() (int, error) {
 	if b.IsEmpty() {
 		return 0, errors.New("Tree is currently empty, unable to get maximum value")
@@ -175,6 +221,7 @@ func (b *BST) Max() (int, error) {
 	return current.val, nil
 }
 
+// Exists is a method that is a wrapper around the node method exists().
 func (b *BST) Exists(val int) bool {
 	if b.IsEmpty() {
 		return false
@@ -183,6 +230,8 @@ func (b *BST) Exists(val int) bool {
 	return b.root.exists(val)
 }
 
+// exists is a node method that is called recursively to traverse the tree
+// and return a bool representing if a val exists currently in the tree.
 func (n *BSTNode) exists(val int) bool {
 	if val == n.val {
 		return true
@@ -197,4 +246,20 @@ func (n *BSTNode) exists(val int) bool {
 	}
 
 	return false
+}
+
+func (b *BST) Delete(val int) error {
+	if b.IsEmpty() {
+		return errors.New("Tree is already empty")
+	}
+
+	if b.root.val == val {
+	}
+
+	return b.root.delete(val)
+}
+
+func (n *BSTNode) delete(val int) error {
+
+	return nil
 }

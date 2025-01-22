@@ -17,9 +17,12 @@ func TestBST(t *testing.T) {
 		_, err = bst.Max()
 		assertError(t, err)
 		assertFalse(t, bst.Exists(1))
+		assertEqual(t, bst.Height(), 0)
 
 		// Test inserting tree
 		assertNotError(t, bst.Insert(5))
+		assertEqual(t, bst.Height(), 1)
+
 		assertNotError(t, bst.Insert(2))
 		assertNotError(t, bst.Insert(11))
 		assertNotError(t, bst.Insert(12))
@@ -42,5 +45,16 @@ func TestBST(t *testing.T) {
 		assertTrue(t, bst.Exists(5))
 		assertFalse(t, bst.Exists(6))
 		assertTrue(t, bst.Exists(2))
+
+		// Test height of tree
+		assertEqual(t, bst.Height(), 3)
+		assertNotError(t, bst.Insert(3))
+		assertNotError(t, bst.Insert(4))
+		assertEqual(t, bst.Height(), 4)
+
+		// Test deleting of tree node
+		assertDeepEqual(t, bst.InOrder(), []int{2, 3, 4, 5, 11, 12})
+		assertNotError(t, bst.Delete(2))
+		assertDeepEqual(t, bst.InOrder(), []int{3, 4, 5, 11, 12})
 	})
 }
