@@ -4,11 +4,33 @@ This directory just contains Notes and sample programs I made while working
 through the "[[https://www.udemy.com/course/building-web-applications-with-go-intermediate-level/?couponCode=KEEPLEARNING][Building Web Applications with Go]]" course on Udemy.
 
 In this course we will be building out a simple web server that process credit
-card transactions via [[https://stripe.com/][Stripe]]: [[./webApp/][Web Application]]
+card transactions via [[https://stripe.com/][Stripe]].
 
 In this course we will also be using an application called [[https://github.com/air-verse/air][air]] to live reload
 our web pages as we develop them. You can install air with the following
 command:
-#+begin_src shell
-  go install github.com/air-verse/air@latest
-#+end_src
+ #+begin_src shell
+   go install github.com/air-verse/air@latest
+ #+end_src
+
+* Running the app:
+  To start the DB:
+  #+begin_src shell
+    make startdb
+  #+end_src
+
+  Connect with DB client of choice and create a new database called
+  ~widgets~. After the database has been created run:
+  #+begin_src sql
+    grant all on widgets.* to 'maker'@'%' identified by 'verysecret';
+  #+end_src
+
+  After that you can install soda:
+  #+begin_src shell
+    go install github.com/gobuffalo/pop/v6/soda@latest
+  #+end_src
+
+  And finally you can apply the sql files to create our tables with:
+  #+begin_src shell
+    soda migrate
+  #+end_src
