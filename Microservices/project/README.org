@@ -1,5 +1,10 @@
+#+TITLE: How to run
+
 For Caddy to work in the docker swarm setup you will need to add backend to
 ~/etc/hosts~.
+#+begin_example
+  192.168.x.y   front-end.info broker-service.info
+#+end_example
 
 * Kubernetes
   To get the application up and running in kubernetes run the following:
@@ -11,4 +16,13 @@ For Caddy to work in the docker swarm setup you will need to add backend to
 
     kubectl apply -f k8s
     kubectl apply -f ingress.yaml
+  #+end_src
+
+  To stop the kubernetes setup:
+  #+begin_src shell
+    docker-compose down
+
+    minikube stop
+
+    minikube delete
   #+end_src
