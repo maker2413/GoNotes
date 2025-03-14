@@ -1,0 +1,28 @@
+#+TITLE: Working with React and Go
+
+This directory just contains Notes and sample programs I made while working
+through the "[[https://www.udemy.com/course/working-with-react-and-go-golang/][Working with React and Go]]" course on Udemy.
+
+* Contents
+  This course covers the following topics:
+  - An introduction to React
+  - Classes and Functional Components/Hooks
+  - Building a REST API in Go
+  - GraphQL
+  - JWT & Refresh Tokens
+
+  React is chosen for this course because it has:
+  - Reusable components
+  - Fast rendering
+  - Unidirectional data flow
+  - Large community
+
+  This course will build a single page app (SPA) that allows us to add, updated,
+  and delete data. The backend will handle JSON and GraphQL and the whole site
+  will be secured with JWT.
+
+* TODO React Notes
+  Being that I currently don't have great JavaScript notes I am going to be
+  storing my React Notes here temporarily. Long term I due plan on having a
+  separate repo for JavaScript related notes so expect this section to move
+  here: [[https://github.com/maker2413/JavaScriptNotes]].

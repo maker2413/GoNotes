@@ -63,6 +63,7 @@ https://quii.gitbook.io/learn-go-with-tests/ and have been loving it.
   - 5. :: [[./BuildingModernWebApplicationsWithGo/README.org][Building Modern Web Applications with Go]]
   - 6. :: [[./BuildingWebApplicationsWithGo/README.org][Building Web Applications with Go]]
   - 7. :: [[./Microservices/README.org][Working with Microservices in Go]]
+  - 8. :: [[./WorkingWithReactAndGo/README.org][Working with React and Go]]
 
 * Practice programs
   This is just some random practice programs I have done to test myself. To view
