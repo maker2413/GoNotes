@@ -34,3 +34,8 @@ command:
   #+begin_src shell
     soda migrate
   #+end_src
+
+  To generate new migrations with soda you can run:
+  #+begin_src shell
+    soda generate <NameOfMigration>
+  #+end_src

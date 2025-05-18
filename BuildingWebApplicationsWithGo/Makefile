@@ -67,3 +67,9 @@ startdb:
 
 stopdb:
 	docker stop mariadb
+
+migrate:
+	soda migrate
+
+reset:
+	soda reset
