@@ -18,6 +18,7 @@ type templateData struct {
 	Warning              string
 	Error                string
 	IsAuthenticated      bool
+	UserID               int
 	API                  string
 	CSSVersion           string
 	StripeSecretKey      string
@@ -43,8 +44,10 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 
 	if app.Session.Exists(r.Context(), "userID") {
 		td.IsAuthenticated = true
+		td.UserID = app.Session.GetInt(r.Context(), "userID")
 	} else {
 		td.IsAuthenticated = false
+		td.UserID = 0
 	}
 	return td
 }
