@@ -1,7 +1,7 @@
 #+TITLE: Building Web Applications with Go
 
 This directory just contains Notes and sample programs I made while working
-through the "[[https://www.udemy.com/course/building-web-applications-with-go-intermediate-level/?couponCode=KEEPLEARNING][Building Web Applications with Go]]" course on Udemy.
+through the "[[https://www.udemy.com/course/building-web-applications-with-go-intermediate-level/][Building Web Applications with Go]]" course on Udemy.
 
 In this course we will be building out a simple web server that process credit
 card transactions via [[https://stripe.com/][Stripe]].

@@ -1,1 +1,4 @@
 #+TITLE: Building Modern Web Applications with Go
+
+This directory just contains Notes and sample programs I made while working
+through the "[[https://www.udemy.com/course/building-modern-web-applications-with-go/][Building Modern Web Applications with Go]]" course on Udemy.

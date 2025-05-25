@@ -26,3 +26,5 @@ through the "[[https://www.udemy.com/course/working-with-react-and-go-golang/][W
   storing my React Notes here temporarily. Long term I due plan on having a
   separate repo for JavaScript related notes so expect this section to move
   here: [[https://github.com/maker2413/JavaScriptNotes]].
+
+  ~my-app~ directory was generated with: ~npx create-react-app my-app~.
