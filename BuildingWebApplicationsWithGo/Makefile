@@ -27,8 +27,14 @@ build_back:
 	@go build -o dist/gostripe_api ./cmd/api
 	@echo "Back end built!"
 
-## start: starts front and back end
-start: start_front start_back
+## build_invoice: builds the invoice microservice
+build_invoice:
+	@echo "Building back end..."
+	@go build -o dist/invoice ./cmd/micro/invoice
+	@echo "Invoice microservice built!"
+
+## start: starts front end, back end, and invoice microservice
+start: start_front start_back start_invoice
 
 ## start_front: starts the front end
 start_front: build_front
@@ -42,8 +48,14 @@ start_back: build_back
 	@env STRIPE_KEY=${STRIPE_KEY} STRIPE_SECRET=${STRIPE_SECRET} ./dist/gostripe_api -port=${API_PORT} -dsn="${DSN}" &
 	@echo "Back end running!"
 
-## stop: stops the front and back end
-stop: stop_front stop_back
+## start_invoice: starts the invoice microservice
+start_invoice: build_invoice
+	@echo "Starting the invoice microservice..."
+	@./dist/invoice &
+	@echo "Invoice microservice running!"
+
+## stop: stops the front end, back end, and invoice microservice
+stop: stop_front stop_back stop_invoice
 	@echo "All applications stopped"
 
 ## stop_front: stops the front end
@@ -57,6 +69,12 @@ stop_back:
 	@echo "Stopping the back end..."
 	@-pkill -SIGTERM -f "gostripe_api -port=${API_PORT}"
 	@echo "Stopped back end"
+
+## stop_invoice: stops the invoice microservice
+stop_invoice:
+	@echo "Stopping the invoice microservice..."
+	@-pkill -SIGTERM -f "invoice"
+	@echo "Stopped invoice microservice"
 
 startdb:
 	mkdir -p db-data/mariadb && \
