@@ -19,8 +19,8 @@ require (
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/containerd/continuity v0.4.5 // indirect
-	github.com/docker/cli v27.4.1+incompatible // indirect
-	github.com/docker/docker v27.4.1+incompatible // indirect
+	github.com/docker/cli v28.3.3+incompatible // indirect
+	github.com/docker/docker v28.3.3+incompatible // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
@@ -45,5 +45,5 @@ require (
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
