@@ -1,6 +1,6 @@
 module final-project
 
-go 1.23.4
+go 1.24.0
 
 require (
 	github.com/alexedwards/scs/redisstore v0.0.0-20240316134038-7e11d57e8885
@@ -13,7 +13,7 @@ require (
 	github.com/phpdave11/gofpdf v1.4.2
 	github.com/vanng822/go-premailer v1.22.0
 	github.com/xhit/go-simple-mail/v2 v2.16.0
-	golang.org/x/crypto v0.41.0
+	golang.org/x/crypto v0.45.0
 )
 
 require (
@@ -31,7 +31,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/toorop/go-dkim v0.0.0-20240103092955-90b7d1423f92 // indirect
 	github.com/vanng822/css v1.0.1 // indirect
-	golang.org/x/net v0.43.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 )
