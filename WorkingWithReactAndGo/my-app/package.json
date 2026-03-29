@@ -48,7 +48,8 @@
     "express": ">=4.22.0",
     "glob": ">=10.5.0",
     "serialize-javascript": ">=7.0.3",
-    "svgo": ">=2.8.1"
+    "svgo": ">=2.8.1",
+    "@tootallnate/once": ">=3.0.1"
   },
   "devDependencies": {
     "patch-package": "^8.0.0"
