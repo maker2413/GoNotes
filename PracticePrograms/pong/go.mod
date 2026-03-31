@@ -1,10 +1,10 @@
 module pong
 
-go 1.23.3
+go 1.25.0
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.8.5
-	golang.org/x/image v0.20.0
+	golang.org/x/image v0.38.0
 )
 
 require (
