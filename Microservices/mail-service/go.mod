@@ -1,6 +1,6 @@
 module mailer-service
 
-go 1.23.4
+go 1.25.0
 
 require (
 	github.com/go-chi/chi/v5 v5.2.4
@@ -16,5 +16,5 @@ require (
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/toorop/go-dkim v0.0.0-20240103092955-90b7d1423f92 // indirect
 	github.com/vanng822/css v1.0.1 // indirect
-	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
 )
