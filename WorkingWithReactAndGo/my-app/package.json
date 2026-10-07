@@ -38,6 +38,7 @@
     ]
   },
   "overrides": {
+    "braces": "npm:@dieub/braces-depth-guard@3.0.3-pn.3",
     "nth-check": "^2.1.1",
     "postcss": "^8.5.18",
     "webpack-dev-server": "^5.2.6",
