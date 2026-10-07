@@ -41,6 +41,7 @@
     "braces": "npm:@dieub/braces-depth-guard@3.0.3-pn.3",
     "nth-check": "^2.1.1",
     "postcss": "^8.5.18",
+    "postcss-selector-parser": "^7.1.6",
     "webpack-dev-server": "^5.2.6",
     "http-proxy-middleware": "^2.0.10",
     "tmp": "0.2.7",
